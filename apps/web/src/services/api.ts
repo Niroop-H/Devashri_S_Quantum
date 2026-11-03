@@ -1,6 +1,6 @@
 import { CircuitStep, NoiseSettings, SimulationResult } from "../types";
 
-const ENGINE_URL = "http://localhost:4000";
+const ENGINE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:4000" : "");
 
 export async function runSimulation(
   qubits: number,
