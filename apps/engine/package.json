@@ -8,7 +8,7 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "test": "tsc && node --test dist/test/verify.test.js"
+    "test": "tsc && node --test dist/test/*.test.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

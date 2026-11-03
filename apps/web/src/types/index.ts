@@ -29,18 +29,7 @@ export interface StateVectorEntry {
   phase: number;
 }
 
-export interface SimulationResult {
-  counts: Record<string, number>;
-  probabilities: Record<string, number>;
-  stateVector: StateVectorEntry[];
-  executionTimeMs: number;
-  backendInfo: {
-    qpuSimulated: string;
-    qubitCount: number;
-    shots: number;
-    fidelityEstimated: number;
-  };
-}
+export type SimulationResult = import("../../../engine/src/studio/simulate").StudioResult;
 
 /** Gate metadata for the palette UI */
 export interface GateInfo {

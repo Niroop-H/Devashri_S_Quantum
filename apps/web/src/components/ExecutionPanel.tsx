@@ -76,12 +76,14 @@ export const ExecutionPanel: React.FC<ExecutionPanelProps> = ({
         <div className="flex items-center space-x-4 text-neutral-500">
           <span className="flex items-center space-x-1">
             <Zap className="w-3 h-3 text-yellow-500" />
-            <span>{result.executionTimeMs} ms</span>
+            <span>{result.executionTimeMs.toFixed(2)} ms</span>
           </span>
           <span>
-            Fidelity:{" "}
+            Counts:{" "}
             <span className="text-neutral-300">
-              {(result.backendInfo.fidelityEstimated * 100).toFixed(1)}%
+              {Object.values(result.counts)
+                .reduce((a, b) => a + b, 0)
+                .toLocaleString()}
             </span>
           </span>
         </div>
@@ -125,6 +127,9 @@ export const ExecutionPanel: React.FC<ExecutionPanelProps> = ({
         </button>
       </div>
 
+      <p className="result-state-label">
+        {result.stateLabel} · seed {result.seed}
+      </p>
       {/* Tab content */}
       <div
         id="result-content"
@@ -135,6 +140,7 @@ export const ExecutionPanel: React.FC<ExecutionPanelProps> = ({
         {activeTab === "histogram" ? (
           <HistogramView
             probabilities={result.probabilities}
+            idealProbabilities={result.idealProbabilities}
             counts={result.counts}
             shots={shots}
           />

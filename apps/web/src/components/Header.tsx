@@ -48,10 +48,10 @@ export const Header: React.FC<HeaderProps> = ({
       </a>
       <nav className="header-nav" aria-label="Studio navigation">
         <a href="#workspace" className="nav-active">
-          Quantum composer
+          Quantum workspace
         </a>
         <a
-          href="https://github.com/Niroop-H/Devashri_S_Quantum/blob/main/Q-Sim_Instruction_Manual.pdf"
+          href="https://github.com/Niroop-H/Devashri_S_Quantum/blob/main/README.md"
           target="_blank"
           rel="noreferrer"
         >
@@ -59,7 +59,7 @@ export const Header: React.FC<HeaderProps> = ({
         </a>
       </nav>
       <span className="environment-badge">
-        <span /> VIRTUAL QUANTUM LAB
+        <span /> FREE LOCAL SIMULATOR
       </span>
     </div>
     <div className="control-row">
@@ -76,7 +76,7 @@ export const Header: React.FC<HeaderProps> = ({
             onChange={(e) => setQubits(Number(e.target.value))}
             disabled={isRunning}
           >
-            {[2, 3, 4, 5, 6, 7, 8].map((n) => (
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
               <option key={n} value={n}>
                 {n.toString().padStart(2, "0")}
               </option>
@@ -91,7 +91,7 @@ export const Header: React.FC<HeaderProps> = ({
             onChange={(e) => setShots(Number(e.target.value))}
             disabled={isRunning}
           >
-            {[512, 1024, 2048, 4096, 8192].map((n) => (
+            {[128, 256, 512, 1024, 2048, 4096, 8192].map((n) => (
               <option key={n} value={n}>
                 {n.toLocaleString()}
               </option>
@@ -101,6 +101,7 @@ export const Header: React.FC<HeaderProps> = ({
         <button
           className={`noise-button ${noiseEnabled ? "enabled" : ""}`}
           onClick={toggleNoiseModal}
+          disabled={isRunning}
         >
           <Settings2 size={15} /> Noise{" "}
           <span>{noiseEnabled ? "ON" : "OFF"}</span>
