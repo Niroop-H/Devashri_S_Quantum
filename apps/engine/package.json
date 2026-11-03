@@ -1,6 +1,8 @@
 {
-  "name": "@quantum/engine",
+  "name": "@mah-quantum/engine",
   "version": "1.0.0",
+  "author": "Devashri S Quantum",
+  "license": "UNLICENSED",
   "main": "dist/server.js",
   "scripts": {
     "build": "tsc",

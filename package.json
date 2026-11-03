@@ -1,7 +1,9 @@
 {
-  "name": "quantum-simulator-monorepo",
+  "name": "mah-quantum-monorepo",
   "version": "1.0.0",
   "private": true,
+  "author": "Devashri S Quantum",
+  "license": "UNLICENSED",
   "workspaces": [
     "apps/*"
   ],

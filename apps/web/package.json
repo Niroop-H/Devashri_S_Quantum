@@ -1,6 +1,8 @@
 {
-  "name": "@quantum/web",
+  "name": "@mah-quantum/web",
   "version": "1.0.0",
+  "author": "Devashri S Quantum",
+  "license": "UNLICENSED",
   "type": "module",
   "scripts": {
     "dev": "vite",

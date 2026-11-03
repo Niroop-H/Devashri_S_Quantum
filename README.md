@@ -1,11 +1,12 @@
-# Q-Sim: Full-Stack Classical Quantum Circuit Simulator & Playground
+# MAH Quantum™: Classical Quantum Circuit Simulator & Playground
+> **Developed by Devashri S Quantum**
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue.svg)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18.3-61dafb.svg)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-5.3-646cff.svg)](https://vitejs.dev/)
 [![Express](https://img.shields.io/badge/Express-4.19-000000.svg)](https://expressjs.com/)
 [![Tests](https://img.shields.io/badge/Tests-10%2F10%20Passing-success.svg)](#test-suite)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
 
 An end-to-end, production-grade Web Application that mathematically simulates quantum circuit execution on classical hardware. Built with a decoupled **Node.js/TypeScript statevector engine** and an interactive **React (Vite) IBM Quantum Composer-style visual canvas**.
 
@@ -207,4 +208,7 @@ quantum-simulator/
 ---
 
 ## 📜 License
-MIT License. Created for Classical Quantum Simulation and Quantum Information Research.
+**Proprietary Software License**  
+Copyright © 2026 **MAH Quantum™**. All Rights Reserved.  
+**Developed by Devashri S Quantum**.  
+Unauthorized copying, modification, distribution, or reverse engineering of this software is strictly prohibited. See [LICENSE](LICENSE) for details.

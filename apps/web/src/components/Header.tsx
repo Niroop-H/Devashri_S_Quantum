@@ -33,10 +33,10 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
         <div>
           <h1 className="text-base font-bold tracking-wider text-white">
-            Q-SIM CLASSICAL QPU STUDIO
+            MAH QUANTUM™ QPU STUDIO
           </h1>
-          <p className="text-[11px] text-neutral-500">
-            Statevector Simulator &bull; {qubits}-Qubit Virtual Transmon &bull; Online
+          <p className="text-[11px] text-neutral-400">
+            Developed by <span className="text-ibm-cyan font-semibold">Devashri S Quantum</span> &bull; {qubits}-Qubit Virtual Transmon
           </p>
         </div>
       </div>
