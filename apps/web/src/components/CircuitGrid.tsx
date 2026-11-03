@@ -31,14 +31,22 @@ function buildStepColumns(steps: CircuitStep[]): (CircuitStep | null)[] {
 function gateColor(gate: GateType): string {
   const info = GATE_CATALOG.find((g) => g.type === gate);
   switch (info?.category) {
-    case "Superposition": return "border-sky-500 bg-sky-950/60 text-sky-300";
-    case "Clifford": return "border-violet-500 bg-violet-950/60 text-violet-300";
-    case "Phase": return "border-emerald-500 bg-emerald-950/60 text-emerald-300";
-    case "Parametric": return "border-orange-500 bg-orange-950/60 text-orange-300";
-    case "Entanglement": return "border-rose-500 bg-rose-950/60 text-rose-300";
-    case "Multi-Qubit": return "border-pink-500 bg-pink-950/60 text-pink-300";
-    case "Operations": return "border-neutral-500 bg-neutral-800 text-neutral-300";
-    default: return "border-ibm-blue bg-ibm-gray text-white";
+    case "Superposition":
+      return "border-sky-500 bg-sky-950/60 text-sky-300";
+    case "Clifford":
+      return "border-violet-500 bg-violet-950/60 text-violet-300";
+    case "Phase":
+      return "border-emerald-500 bg-emerald-950/60 text-emerald-300";
+    case "Parametric":
+      return "border-orange-500 bg-orange-950/60 text-orange-300";
+    case "Entanglement":
+      return "border-rose-500 bg-rose-950/60 text-rose-300";
+    case "Multi-Qubit":
+      return "border-pink-500 bg-pink-950/60 text-pink-300";
+    case "Operations":
+      return "border-neutral-500 bg-neutral-800 text-neutral-300";
+    default:
+      return "border-ibm-blue bg-ibm-gray text-white";
   }
 }
 
@@ -48,12 +56,13 @@ export const CircuitGrid: React.FC<CircuitGridProps> = ({
   selectedGate,
   paramAngle,
   onAddStep,
-  onRemoveStep
+  onRemoveStep,
 }) => {
   const columns = buildStepColumns(steps);
 
   const handleCellClick = (qubit: number, col: number) => {
-    if (!selectedGate) return;
+    if (!selectedGate || steps.length >= COLUMNS) return;
+    if (selectedGate === "CCX" && qubits < 3) return;
     if (columns[col] !== null) return; // already occupied
 
     const id = `step-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
@@ -71,8 +80,9 @@ export const CircuitGrid: React.FC<CircuitGridProps> = ({
         const other = qubit === 0 ? 1 : qubit - 1;
         onAddStep({ id, gate: "SWAP", targets: [qubit, other] });
       } else if (selectedGate === "CCX") {
-        const c1 = qubit >= 2 ? qubit - 2 : qubit + 1;
-        const c2 = qubit >= 1 ? qubit - 1 : qubit + 2;
+        const [c1, c2] = Array.from({ length: qubits }, (_, i) => i).filter(
+          (i) => i !== qubit,
+        );
         onAddStep({ id, gate: "CCX", targets: [qubit], controls: [c1, c2] });
       }
     } else if (info?.isParametric) {
@@ -80,7 +90,7 @@ export const CircuitGrid: React.FC<CircuitGridProps> = ({
         id,
         gate: selectedGate,
         targets: [qubit],
-        params: { theta: paramAngle, lambda: paramAngle }
+        params: { theta: paramAngle, lambda: paramAngle },
       });
     } else {
       onAddStep({ id, gate: selectedGate, targets: [qubit] });
@@ -88,7 +98,7 @@ export const CircuitGrid: React.FC<CircuitGridProps> = ({
   };
 
   return (
-    <div className="flex-1 bg-ibm-darker p-4 overflow-x-auto overflow-y-auto">
+    <div className="circuit-grid flex-1 p-4 overflow-auto">
       <div className="min-w-[900px]">
         {Array.from({ length: qubits }).map((_, qIndex) => (
           <div key={qIndex} className="relative flex items-center h-12 mb-1">
@@ -109,11 +119,17 @@ export const CircuitGrid: React.FC<CircuitGridProps> = ({
                 const involvedInStep = isThisQubitTarget || isThisQubitControl;
 
                 // Check if a multi-qubit gate spans through this qubit
-                const showConnector = step && step.targets && step.controls
-                  && step.controls.length > 0
-                  && !involvedInStep
-                  && (() => {
-                    const allQubits = [...step.targets, ...(step.controls ?? [])];
+                const showConnector =
+                  step &&
+                  step.targets &&
+                  step.controls &&
+                  step.controls.length > 0 &&
+                  !involvedInStep &&
+                  (() => {
+                    const allQubits = [
+                      ...step.targets,
+                      ...(step.controls ?? []),
+                    ];
                     const minQ = Math.min(...allQubits);
                     const maxQ = Math.max(...allQubits);
                     return qIndex > minQ && qIndex < maxQ;
@@ -122,6 +138,25 @@ export const CircuitGrid: React.FC<CircuitGridProps> = ({
                 return (
                   <div
                     key={col}
+                    role={step ? "group" : "button"}
+                    tabIndex={
+                      step || (selectedGate === "CCX" && qubits < 3) ? -1 : 0
+                    }
+                    aria-label={`Append ${selectedGate ?? "gate"} to qubit ${qIndex}, slot ${col + 1}`}
+                    aria-disabled={
+                      !step && selectedGate === "CCX" && qubits < 3
+                        ? true
+                        : undefined
+                    }
+                    onKeyDown={(e) => {
+                      if (
+                        e.target === e.currentTarget &&
+                        (e.key === "Enter" || e.key === " ")
+                      ) {
+                        e.preventDefault();
+                        handleCellClick(qIndex, col);
+                      }
+                    }}
                     onClick={() => handleCellClick(qIndex, col)}
                     className={`relative z-10 w-10 h-10 rounded flex items-center justify-center transition-all cursor-pointer ${
                       step
@@ -142,15 +177,20 @@ export const CircuitGrid: React.FC<CircuitGridProps> = ({
                         <div
                           className={`w-9 h-9 rounded border flex items-center justify-center font-mono font-bold text-[11px] shadow-sm ${gateColor(step.gate)}`}
                         >
-                          {step.gate === "CX" ? "⊕" : step.gate === "MEASURE" ? "M" : step.gate}
+                          {step.gate === "CX"
+                            ? "⊕"
+                            : step.gate === "MEASURE"
+                              ? "M"
+                              : step.gate}
                         </div>
                         {/* Delete button */}
                         <button
+                          aria-label={`Remove ${step.gate} gate from qubit ${qIndex}`}
                           onClick={(e) => {
                             e.stopPropagation();
                             onRemoveStep(step.id);
                           }}
-                          className="absolute -top-1.5 -right-1.5 hidden group-hover:flex bg-red-600 hover:bg-red-500 rounded-full p-0.5 text-white shadow-lg z-20"
+                          className="absolute -top-1.5 -right-1.5 flex opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 bg-red-600 hover:bg-red-500 rounded-full p-0.5 text-white shadow-lg z-20"
                         >
                           <Trash2 className="w-2.5 h-2.5" />
                         </button>

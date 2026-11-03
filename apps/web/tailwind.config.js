@@ -1,25 +1,22 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
         ibm: {
-          dark: "#161616",
-          darker: "#0d0d0d",
-          gray: "#262626",
+          dark: "#10151e",
+          darker: "#080c12",
+          gray: "#252d38",
           lightGray: "#525252",
-          blue: "#0f62fe",
-          blueHover: "#0353e9",
+          blue: "#c7a66b",
+          blueHover: "#e2c38c",
           purple: "#8a3ffc",
-          cyan: "#1192e8",
-          teal: "#007d79"
-        }
-      }
+          cyan: "#80cbcd",
+          teal: "#007d79",
+        },
+      },
     },
   },
   plugins: [],
-}
+};

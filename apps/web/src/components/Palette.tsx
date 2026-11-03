@@ -34,15 +34,15 @@ export const Palette: React.FC<PaletteProps> = ({
   selectedGate,
   onSelectGate,
   paramAngle,
-  onParamAngleChange
+  onParamAngleChange,
 }) => {
   const isParametricSelected =
     selectedGate === "RX" || selectedGate === "RY" || selectedGate === "RZ";
 
   return (
-    <div className="w-56 bg-ibm-dark border-r border-ibm-gray p-4 flex flex-col space-y-4 overflow-y-auto">
+    <div className="gate-palette p-4 flex flex-col space-y-4">
       <h2 className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">
-        Gate Palette
+        Gate library
       </h2>
 
       <div className="grid grid-cols-2 gap-1.5">
@@ -53,6 +53,7 @@ export const Palette: React.FC<PaletteProps> = ({
           return (
             <button
               key={g.type}
+              aria-pressed={isSelected}
               onClick={() => onSelectGate(g.type)}
               className={`flex flex-col items-center justify-center py-2.5 px-1 rounded border text-center transition-all duration-100 ${
                 isSelected
@@ -64,7 +65,7 @@ export const Palette: React.FC<PaletteProps> = ({
               <span className="text-sm font-bold font-mono leading-none">
                 {g.label}
               </span>
-              <span className="text-[9px] text-neutral-500 mt-1 leading-tight">
+              <span className="text-[9px] text-neutral-400 mt-1 leading-tight">
                 {g.description}
               </span>
             </button>

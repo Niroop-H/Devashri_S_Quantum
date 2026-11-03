@@ -71,7 +71,7 @@ export const HistogramView: React.FC<HistogramViewProps> = ({
         />
         <Bar
           dataKey="probability"
-          fill="#0f62fe"
+          fill="#c7a66b"
           radius={[3, 3, 0, 0]}
           maxBarSize={60}
         />
