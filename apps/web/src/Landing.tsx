@@ -1,3 +1,4 @@
+import "./lab/lab.css";
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowUpRight,
@@ -165,6 +166,8 @@ export default function Landing() {
             Start experimenting <ArrowUpRight size={18} />
           </a>
         </div>
+        <nav className="lab-links" aria-label="Quantum technology branches"><a href="/studio"><span>01</span> Quantum Computing ↗</a><a href="/lab"><span>02</span> Quantum Lab Twin ↗</a><a href="/sensing"><span>03</span> Sensing & Metrology ↗</a><a href="/communication"><span>04</span> Communication & Cryptography ↗</a></nav>
+        <section className="landing-cryo"><div className="cryo-cutaway" aria-label="Five-stage dilution refrigerator cutaway"><div className="cryo-cold-glow"/><div className="cryo-stack">{[0,1,2,3,4].map(i=><div className="cryo-plate" key={i} style={{top:`${i*66}px`,left:`${i*5}%`,right:`${i*5}%`}}><span>{['300 K','50 K','4 K','800 mK','10 mK'][i]}</span></div>)}{[12,45,78].map(x=><i className="cryo-rod" key={x} style={{left:`${x}%`}}/>)}{Array.from({length:12},(_,i)=><i className="cryo-wire" key={i} style={{left:`${15+i*5}%`}}/>)}</div></div><div><span className="land-eyebrow">BEYOND THE CHIP / CRYOGENIC INFRASTRUCTURE</span><h2>The environment<br/>is part of the experiment.</h2><p>Explore five cooling stages, helium circulation, vacuum integrity, optical alignment and qubit calibration in a connected virtual laboratory.</p><a className="land-button" href="/lab">Enter the Quantum Lab Twin ↗</a></div></section>
         <ArchitectureExperience/>
         <BellExperience/>
         <section className="land-workflow" id="workflow"><div className="workspace-watermark" aria-hidden="true">ψ</div>

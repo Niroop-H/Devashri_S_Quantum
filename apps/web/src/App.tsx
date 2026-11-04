@@ -1,3 +1,4 @@
+import { LabNav } from "./lab/Shared";
 import { newId } from "./services/id";
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Header } from "./components/Header";
@@ -319,7 +320,7 @@ export const App: React.FC = () => {
     visualChange({ ...program, steps });
   };
   return (
-    <div id="top" className={`studio-app ${motion ? "" : "motion-paused"}`}>
+    <div id="top" className={`studio-app ${motion ? "" : "motion-paused"}`}><LabNav/>
       <a className="skip-link" href="#workspace">
         Skip to workspace
       </a>

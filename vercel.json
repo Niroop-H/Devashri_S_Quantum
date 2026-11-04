@@ -10,6 +10,18 @@
     {
       "source": "/studio/:path*",
       "destination": "/index.html"
+    },
+    {
+      "source": "/lab/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/sensing/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/communication/:path*",
+      "destination": "/index.html"
     }
   ]
 }
