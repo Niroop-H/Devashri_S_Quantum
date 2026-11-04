@@ -57,3 +57,7 @@ Proprietary software. Copyright © 2026 MAH Quantum™. See [LICENSE](LICENSE).
 Dedicated pages: `/studio` (Quantum Computing), `/lab` (Quantum Lab Twin), `/sensing` (Quantum Sensing & Metrology), and `/communication` (Quantum Communication & Cryptography). The new workbenches compute locally without paid APIs.
 
 See [the laboratory architecture, equations, operator exercises and deployment guide](docs/QUANTUM_LAB.md). Optional stateless Python service configuration is in `render.yaml`; the frontend does not require it.
+
+## Full-page hardware playground
+
+`/lab` now opens the configurable Quantum Playground: ten hardware models, connected optical and thermal signals, Explore/Study/Research modes, five guided goals, parameter sweeps, measurement exports and project save/import. The original four transient exercises are at `/lab/operations`. Read the [playground operator and physics guide](docs/PLAYGROUND.md).

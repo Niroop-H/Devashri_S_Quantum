@@ -1,4 +1,6 @@
 import "./lab/lab.css";
+import WorkspaceMenu from "./WorkspaceMenu";
+import ChipFabrication from "./ChipFabrication";
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowUpRight,
@@ -9,16 +11,18 @@ import {
   Minus,
 } from "lucide-react";
 import "./landing.css";
+import "./forged-chip.css";
 import { ArchitectureExperience, BellExperience } from "./LandingExperience";
 
 function QuantumGlobe({playing, excited}:{playing:boolean;excited:boolean}) {
  const [expanded,setExpanded]=useState(false);
- return <div className={`landchip-scene ${playing ? "" : "landchip-paused"} ${excited ? "landchip-active" : ""} ${expanded ? "processor-expanded" : ""}`} onPointerMove={e=>{const r=e.currentTarget.getBoundingClientRect();e.currentTarget.style.setProperty('--tilt',`${(e.clientX-r.left)/r.width*22-11}deg`);}} onPointerLeave={e=>e.currentTarget.style.setProperty('--tilt','0deg')}>
+ const [macro,setMacro]=useState(false);
+ return <div className={`landchip-scene ${macro ? "chip-macro" : ""} ${playing ? "" : "landchip-paused"} ${excited ? "landchip-active" : ""} ${expanded ? "processor-expanded" : ""}`} onPointerMove={e=>{const r=e.currentTarget.getBoundingClientRect();e.currentTarget.style.setProperty('--tilt',`${(e.clientX-r.left)/r.width*22-11}deg`);}} onPointerLeave={e=>e.currentTarget.style.setProperty('--tilt','0deg')}>
  <div className="core-environment" aria-hidden="true"><div className="core-halo halo-outer"/><div className="core-halo halo-inner"/><div className="core-halo halo-ticks"/><div className="core-nebula"/><div className="core-rays"/><svg className="core-signals" viewBox="0 0 600 520">{Array.from({length:12},(_,i)=>{const y=50+i*36;return <g key={i} style={{animationDelay:`${i*.25}s`}}><path className="signal-track" d={`M 0 ${y} H ${65+i%3*20} L 170 260 H 430 L ${515-i%3*20} ${y} H 600`}/><path className="signal-packet" style={{animationDelay:`${i*.23}s`}} d={`M 0 ${y} H ${65+i%3*20} L 170 260 H 430 L ${515-i%3*20} ${y} H 600`}/></g>;})}</svg><div className="core-readout readout-left">Q / 08<br/><span>COUPLED ARRAY</span><i/><i/><i/><i/><i/></div><div className="core-readout readout-right">MAH / CORE<br/><span>ARCHITECTURE VIEW</span><b>⌁ ⌁ ⌁</b></div></div><div className="processor-reticle" aria-hidden="true"/><div className="landchip-orbit orbit-a"/><div className="landchip-orbit orbit-b"/>
  <span className="processor-callout callout-one">01 / CONTROL INTERFACE<i/></span><span className="processor-callout callout-two">02 / QUBIT LATTICE<i/></span>
- <div className="landchip-assembly" role="img" aria-label="Layered quantum processor with gold bond wires, circuit traces and eight illuminated qubits">
+ <div className="landchip-assembly" role="img" aria-label="Machined quantum processor with 24 threaded coaxial connectors, gold wire bonds, grounded via fences, socket screws and eight patterned transmon cells">
  <div className="core-underlight"/><div className="core-platform"><i/><i/><i/></div><div className="processor-base"/><div className="processor-interposer"/>
- <div className="landchip-board"><div className="carrier-rim"/><div className="landchip-traces"/>
+ <div className="landchip-board"><ChipFabrication/><div className="metal-specular"/><div className="carrier-rim"/><div className="landchip-traces"/>
  <svg className="fabrication-layer" viewBox="0 0 500 500" aria-hidden="true"><defs><linearGradient id="bond-metal" x2="1" y2="1"><stop stopColor="#715627"/><stop offset=".35" stopColor="#ffe1a0"/><stop offset=".6" stopColor="#ac8137"/><stop offset="1" stopColor="#fff0bd"/></linearGradient></defs>{[0,90,180,270].map(r=><g key={r} transform={`rotate(${r} 250 250)`}>{Array.from({length:18},(_,i)=>{const x=105+i*17;return <g key={i}><path className="gold-route" d={`M ${x} 20 V ${44+i%3*5} L ${150+i*11.8} 95 V 150`}/><path className="arched-bond" d={`M ${150+i*11.8} 145 Q ${130+i*13} 105 ${166+i*9.8} 188`}/><rect x={x-3} y="20" width="6" height="14" rx="1" fill="url(#bond-metal)"/><circle cx={x} cy="55" r="2" fill="#b29a64"/></g>;})}</g>)}{Array.from({length:100},(_,i)=><circle key={i} cx={25+(i%10)*50} cy={25+Math.floor(i/10)*50} r="1.2" fill="#66909c"/>)}</svg>
  <div className="peripheral-modules">{[0,1,2,3].map(i=><div className={`control-module module-${i}`} key={i}><div className="module-pins"/><span>MAH / {['CTRL','READ','SYNC','BIAS'][i]}</span><b>{Array.from({length:12},(_,j)=><i key={j}/>)}</b><small>0{i+1} · CONTROL ARRAY</small></div>)}</div>
  <div className="carrier-corners">{[0,1,2,3].map(i=><div key={i} className={`carrier-corner corner-${i}`}><i/><b/></div>)}</div>
@@ -29,6 +33,7 @@ function QuantumGlobe({playing, excited}:{playing:boolean;excited:boolean}) {
  <div className="landchip-package"><div className="processor-die"><div className="processor-mesh"/><div className="die-dataflow"/>
 <svg className="qubit-architecture" viewBox="0 0 240 240" aria-hidden="true"><defs><linearGradient id="qubit-metal"><stop stopColor="#cbf5ff"/><stop offset=".5" stopColor="#6bbad1"/><stop offset="1" stopColor="#e1faff"/></linearGradient></defs>{Array.from({length:8},(_,i)=>{const x=43+(i%4)*51,y=65+Math.floor(i/4)*94;return <g key={i} className="resonator-unit" style={{animationDelay:`${i*.24}s`}}><path className="resonator-feed" d={`M ${x-17} ${y-36} h 28 v 5 h -28 v 5 h 28 v 5 h -28 v 5 h 14 v 10 M ${x} ${y+12} v 13 h 16 v 5 h -30 v 5 h 30 v 5 h -30`}/><path className="transmon-cross" d={`M ${x-4} ${y-13} h 8 v 9 h 9 v 8 h -9 v 9 h -8 v -9 h -9 v -8 h 9 Z`}/><circle cx={x} cy={y} r="2" fill="#fff"/><text x={x+14} y={y+20}>Q{i}</text>{i%4<3&&<path className="coupler-bus" d={`M ${x+13} ${y} h 10 l 3 -4 l 3 8 l 3 -4 h 6`}/>}</g>;})}<path className="coupler-bus" d="M20 112 H220 M20 118 H220"/><text className="die-signature" x="120" y="229" textAnchor="middle">MAH QUANTUM / Q08</text></svg><div className="processor-scan"/></div></div>
  <div className="core-capacitors">{Array.from({length:16},(_,i)=><i key={i} style={{left:`${12+(i%8)*10}%`,top:i<8?'13%':'83%'}}/>)}</div><span className="processor-serial">MAH / Q-08 · QUANTUM CORE</span></div></div>
+ <button className="chip-inspect" aria-pressed={macro} onClick={()=>setMacro(!macro)}>{macro ? "− Full assembly" : "+ Inspect fabrication"}</button>
  <button className="processor-expand" onClick={()=>setExpanded(!expanded)} aria-pressed={expanded}>{expanded?'− Assemble processor':'+ Explore layers'}</button>
  </div>;
 }
@@ -78,9 +83,7 @@ export default function Landing() {
           <a href="#explore">Experience</a>
           <a href="#questions">Questions</a>
         </nav>
-        <a className="land-button small" href="/studio">
-          Launch Studio <ArrowUpRight size={17} />
-        </a>
+        <WorkspaceMenu/>
       </header>
       <main>
         <section className="land-hero" aria-labelledby="hero-title">
@@ -166,7 +169,7 @@ export default function Landing() {
             Start experimenting <ArrowUpRight size={18} />
           </a>
         </div>
-        <nav className="lab-links" aria-label="Quantum technology branches"><a href="/studio"><span>01</span> Quantum Computing ↗</a><a href="/lab"><span>02</span> Quantum Lab Twin ↗</a><a href="/sensing"><span>03</span> Sensing & Metrology ↗</a><a href="/communication"><span>04</span> Communication & Cryptography ↗</a></nav>
+
         <section className="landing-cryo"><div className="cryo-cutaway" aria-label="Five-stage dilution refrigerator cutaway"><div className="cryo-cold-glow"/><div className="cryo-stack">{[0,1,2,3,4].map(i=><div className="cryo-plate" key={i} style={{top:`${i*66}px`,left:`${i*5}%`,right:`${i*5}%`}}><span>{['300 K','50 K','4 K','800 mK','10 mK'][i]}</span></div>)}{[12,45,78].map(x=><i className="cryo-rod" key={x} style={{left:`${x}%`}}/>)}{Array.from({length:12},(_,i)=><i className="cryo-wire" key={i} style={{left:`${15+i*5}%`}}/>)}</div></div><div><span className="land-eyebrow">BEYOND THE CHIP / CRYOGENIC INFRASTRUCTURE</span><h2>The environment<br/>is part of the experiment.</h2><p>Explore five cooling stages, helium circulation, vacuum integrity, optical alignment and qubit calibration in a connected virtual laboratory.</p><a className="land-button" href="/lab">Enter the Quantum Lab Twin ↗</a></div></section>
         <ArchitectureExperience/>
         <BellExperience/>

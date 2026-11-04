@@ -6,7 +6,8 @@
 |---|---|---|
 | `/` | MAH Quantum — Devashri S Quantum | Animated chip and cryogenic cutaway; links to each discipline |
 | `/studio` | Quantum Computing | Existing circuit composer, code and register calculations |
-| `/lab` | Quantum Lab Twin | Coupled cryogenics, qubit calibration, optical trapping and environmental controls |
+| `/lab` | Quantum Playground | Configurable hardware bench; see [playground guide](PLAYGROUND.md) |
+| `/lab/operations` | Quantum Lab Twin operations | Coupled cryogenics, qubit calibration, optical trapping and environmental controls |
 | `/sensing` | Quantum Sensing & Metrology | Ramsey magnetometry, clock offset and atom-interferometer gravimetry |
 | `/communication` | Quantum Communication & Cryptography | BB84 exchange, fiber loss and CHSH correlations |
 
@@ -32,7 +33,7 @@ All units are explicit in the controls. These are reduced-order computational mo
 ## Operator exercises
 
 ### 1. Cryogenic cooldown
-1. Open `/lab`, **Cryogenic sequence**.
+1. Open `/lab/operations`, **Cryogenic cool-down**.
 2. Enable **Vacuum pump**, then click **Advance 60 s** three times; confirm pressure below 10⁻³ Torr.
 3. Enable **Helium compressor**. Leave valve 50%, flow 400 µmol/s, purity 99.99%, ramp 5.
 4. Start **Run accelerated clock**. The five plates cool sequentially; each clock tick is 60 model seconds. Pause when the cold-stage objective is reached.
