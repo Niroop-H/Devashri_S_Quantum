@@ -30,7 +30,7 @@ export const Header: React.FC<HeaderProps> = ({
 }) => (
   <header className="studio-header">
     <div className="brand-row">
-      <a className="brand" href="#top" aria-label="MAH Quantum home">
+      <a className="brand" href="/" aria-label="MAH Quantum home">
         <img
           src="/mah-quantum-logo.jpg"
           alt="MAH Quantum logo"
@@ -47,6 +47,7 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </a>
       <nav className="header-nav" aria-label="Studio navigation">
+        <a href="/">Home</a>
         <a href="#workspace" className="nav-active">
           Quantum workspace
         </a>

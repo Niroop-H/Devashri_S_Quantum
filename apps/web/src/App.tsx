@@ -354,7 +354,7 @@ export const App: React.FC = () => {
             <h1>
               Build. Code. <em>Explore.</em>
             </h1>
-            <p>Real quantum simulation. Entirely in your browser.</p>
+            <p>Quantum circuits and code. Entirely in your browser.</p>
           </div>
           <div className="lab-welcome-actions">
             <span className="lab-tag">FREE · NO API KEYS</span>
@@ -1033,7 +1033,7 @@ export const App: React.FC = () => {
         <footer className="studio-footer">
           <span>MAH QUANTUM™ / Devashri S Quantum</span>
           <span>
-            Browser simulation · No paid services · Not affiliated with IBM
+            MAH Quantum · Your workspace for quantum circuits and code
           </span>
         </footer>
       </main>
