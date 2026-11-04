@@ -12,17 +12,18 @@ import "./landing.css";
 function QuantumGlobe({playing, excited}:{playing:boolean;excited:boolean}) {
  const [expanded,setExpanded]=useState(false);
  return <div className={`landchip-scene ${playing ? "" : "landchip-paused"} ${excited ? "landchip-active" : ""} ${expanded ? "processor-expanded" : ""}`} onPointerMove={e=>{const r=e.currentTarget.getBoundingClientRect();e.currentTarget.style.setProperty('--tilt',`${(e.clientX-r.left)/r.width*22-11}deg`);}} onPointerLeave={e=>e.currentTarget.style.setProperty('--tilt','0deg')}>
- <div className="processor-reticle" aria-hidden="true"/><div className="landchip-orbit orbit-a"/><div className="landchip-orbit orbit-b"/>
+ <div className="core-environment" aria-hidden="true"><div className="core-halo halo-outer"/><div className="core-halo halo-inner"/><div className="core-halo halo-ticks"/><div className="core-nebula"/><div className="core-rays"/><svg className="core-signals" viewBox="0 0 600 520">{Array.from({length:12},(_,i)=>{const y=50+i*36;return <g key={i} style={{animationDelay:`${i*.25}s`}}><path className="signal-track" d={`M 0 ${y} H ${65+i%3*20} L 170 260 H 430 L ${515-i%3*20} ${y} H 600`}/><path className="signal-packet" style={{animationDelay:`${i*.23}s`}} d={`M 0 ${y} H ${65+i%3*20} L 170 260 H 430 L ${515-i%3*20} ${y} H 600`}/></g>;})}</svg><div className="core-readout readout-left">Q / 08<br/><span>COUPLED ARRAY</span><i/><i/><i/><i/><i/></div><div className="core-readout readout-right">MAH / CORE<br/><span>ARCHITECTURE VIEW</span><b>⌁ ⌁ ⌁</b></div></div><div className="processor-reticle" aria-hidden="true"/><div className="landchip-orbit orbit-a"/><div className="landchip-orbit orbit-b"/>
  <span className="processor-callout callout-one">01 / CONTROL INTERFACE<i/></span><span className="processor-callout callout-two">02 / QUBIT LATTICE<i/></span>
  <div className="landchip-assembly" role="img" aria-label="Layered quantum processor with gold bond wires, circuit traces and eight illuminated qubits">
- <div className="processor-base"/><div className="processor-interposer"/>
+ <div className="core-underlight"/><div className="core-platform"><i/><i/><i/></div><div className="processor-base"/><div className="processor-interposer"/>
  <div className="landchip-board"><div className="landchip-traces"/>
  {Array.from({length:64},(_,i)=>{const side=Math.floor(i/16),pos=7+(i%16)*5.7;return <i className={`processor-contact contact-${side}`} key={i} style={side<2?{left:`${pos}%`}:{top:`${pos}%`}}/>;})}
  <svg className="processor-routing" viewBox="0 0 400 400" aria-hidden="true">{Array.from({length:12},(_,i)=>{const x=26+i*31;return <g key={i}><path d={`M ${x} 10 V 45 L ${100+i*17} 85 V 125 M ${x} 390 V 355 L ${100+i*17} 315 V 275 M 10 ${x} H 45 L 85 ${100+i*17} H 125 M 390 ${x} H 355 L 315 ${100+i*17} H 275`}/><circle cx={x} cy="28" r="2"/><circle cx={x} cy="372" r="2"/></g>;})}</svg>
  {Array.from({length:4},(_,i)=><i key={i} className={`processor-screw screw-${i}`}/>)}
  <div className="processor-bonds">{Array.from({length:32},(_,i)=><i key={i} style={{transform:`rotate(${i*11.25}deg) translateY(-104px)`}}/>)}</div>
- <div className="landchip-package"><div className="processor-die"><div className="processor-mesh"/>{Array.from({length:8},(_,i)=><div className="processor-qubit" key={i} style={{animationDelay:`${i*.22}s`}}><i/><span>Q{i}</span></div>)}<div className="processor-scan"/><strong>MAH <small>QUANTUM</small></strong></div></div>
- <span className="processor-serial">MAH / Q-08 · QUANTUM CORE</span></div></div>
+ <div className="landchip-package"><div className="processor-die"><div className="processor-mesh"/><div className="die-dataflow"/>
+{Array.from({length:8},(_,i)=><div className="processor-qubit" key={i} style={{animationDelay:`${i*.22}s`}}><i/><span>Q{i}</span></div>)}<div className="processor-scan"/><strong>MAH <small>QUANTUM</small></strong></div></div>
+ <div className="core-capacitors">{Array.from({length:16},(_,i)=><i key={i} style={{left:`${12+(i%8)*10}%`,top:i<8?'13%':'83%'}}/>)}</div><span className="processor-serial">MAH / Q-08 · QUANTUM CORE</span></div></div>
  <button className="processor-expand" onClick={()=>setExpanded(!expanded)} aria-pressed={expanded}>{expanded?'− Assemble processor':'+ Explore layers'}</button>
  </div>;
 }
@@ -82,13 +83,7 @@ export default function Landing() {
             <p className="land-eyebrow">
               <span className="live-dot" /> A QUANTUM LAB. OPEN TO YOU.
             </p>
-            <h1 id="hero-title">
-              Small particles.
-              <br />
-              Unlimited
-              <br />
-              <span>possibility.</span>
-            </h1>
+            <h1 id="hero-title" className="brand-hero-title">MAH Quantum <span className="hero-divider">-</span><br/><span>Devashri S Quantum</span></h1>
             <p className="land-intro">
               Meet the world beyond 0 and 1.
               <br />
