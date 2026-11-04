@@ -8,6 +8,7 @@ import {
   Minus,
 } from "lucide-react";
 import "./landing.css";
+import { ArchitectureExperience, BellExperience } from "./LandingExperience";
 
 function QuantumGlobe({playing, excited}:{playing:boolean;excited:boolean}) {
  const [expanded,setExpanded]=useState(false);
@@ -72,8 +73,8 @@ export default function Landing() {
           </span>
         </a>
         <nav aria-label="Main navigation">
-          <a href="#explore">Discover</a>
-          <a href="#workflow">The workspace</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#explore">Experience</a>
           <a href="#questions">Questions</a>
         </nav>
         <a className="land-button small" href="/studio">
@@ -164,86 +165,14 @@ export default function Landing() {
             Start experimenting <ArrowUpRight size={18} />
           </a>
         </div>
-        <section className="land-discover" id="explore">
-          <div className="section-heading">
-            <p className="land-eyebrow">01 — A DIFFERENT WAY TO THINK</p>
-            <h2>
-              Make the abstract
-              <br />
-              <em>something you can see.</em>
-            </h2>
-            <p>
-              Quantum computing makes more sense when you can experiment. Start
-              with a single gate. Follow its effect. Build from there.
-            </p>
-          </div>
-          <div className="discovery-grid">
-            <article className="discovery-main">
-              <div
-                className="mini-circuit"
-                aria-label="Bell circuit illustration: Hadamard on qubit zero, then controlled X on qubit one"
-              >
-                <div>
-                  <span>q₀</span>
-                  <i>H</i>
-                  <b>●</b>
-                  <span>→</span>
-                </div>
-                <div>
-                  <span>q₁</span>
-                  <i className="empty" />
-                  <b>⊕</b>
-                  <span>→</span>
-                </div>
-              </div>
-              <span className="card-index">01 / BUILD</span>
-              <h3>
-                A thought. A gate.
-                <br />A new possibility.
-              </h3>
-              <p>
-                Place gates on the canvas and connect qubits. Create your first
-                entangled state in just two operations.
-              </p>
-              <a href="/studio">
-                Open the circuit composer <ArrowUpRight size={18} />
-              </a>
-            </article>
-            <article className="discovery-code">
-              <div className="code-top">
-                <span>hello_quantum.qasm</span>
-                <span>OPENQASM 3</span>
-              </div>
-              <pre>
-                <span>OPENQASM</span> 3.0;{"\n"}include "stdgates.inc";{"\n\n"}
-                qubit[2] q;{"\n"}bit[2] c;{"\n\n"}
-                <strong>h</strong> q[0];{"\n"}
-                <strong>cx</strong> q[0], q[1];{"\n"}c = measure q;
-              </pre>
-              <span className="card-index">02 / CODE</span>
-              <h3>
-                Go from curiosity
-                <br />
-                to your first program.
-              </h3>
-              <p>
-                Write OpenQASM, compile it into a circuit, and run it locally.
-                Your code and canvas speak the same language.
-              </p>
-              <a href="/studio">
-                Explore the code workspace <ArrowUpRight size={18} />
-              </a>
-            </article>
-          </div>
-        </section>
-        <section className="land-workflow" id="workflow">
+        <ArchitectureExperience/>
+        <BellExperience/>
+        <section className="land-workflow" id="workflow"><div className="workspace-watermark" aria-hidden="true">ψ</div>
           <div>
-            <p className="land-eyebrow">02 — LOOK UNDER THE SURFACE</p>
+            <p className="land-eyebrow">03 / THE DEVELOPMENT ENVIRONMENT</p>
             <h2>
-              Every operation.
-              <br />A little more
-              <br />
-              <span>understanding.</span>
+              One workspace.<br/>
+              <span>Room to go deeper.</span>
             </h2>
             <p>
               A workspace designed to follow your thinking—from the first
@@ -289,7 +218,7 @@ export default function Landing() {
         </section>
         <section className="land-faq" id="questions">
           <div>
-            <p className="land-eyebrow">03 — BEFORE YOU BEGIN</p>
+            <p className="land-eyebrow">04 / BEFORE YOU BEGIN</p>
             <h2>
               A few good
               <br />
@@ -320,12 +249,11 @@ export default function Landing() {
         <section className="land-cta">
           <p className="land-eyebrow">THE NEXT STEP IS YOURS.</p>
           <h2>
-            Curiosity looks
-            <br />
-            good on you.
+            Your next idea.<br />
+            A quantum beginning.
           </h2>
           <a href="/studio" className="land-button">
-            Let’s make something quantum <ArrowUpRight size={22} />
+            Enter MAH Quantum Studio <ArrowUpRight size={22} />
           </a>
           <span className="cta-symbol" aria-hidden="true">
             ψ
