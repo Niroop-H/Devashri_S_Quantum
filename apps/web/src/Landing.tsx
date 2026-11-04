@@ -1,5 +1,5 @@
 import "./lab/lab.css";
-import WorkspaceMenu from "./WorkspaceMenu";
+import SiteHeader from "./SiteHeader";
 import ChipFabrication from "./ChipFabrication";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -71,20 +71,7 @@ export default function Landing() {
       <a className="landing-skip" href="#explore">
         Skip to content
       </a>
-      <header className="land-nav">
-        <a href="/" className="land-brand">
-          <img src="/mah-quantum-logo.jpg" alt="" />
-          <span>
-            MAH Quantum - Devashri S Quantum
-          </span>
-        </a>
-        <nav aria-label="Main navigation">
-          <a href="#architecture">Architecture</a>
-          <a href="#explore">Experience</a>
-          <a href="#questions">Questions</a>
-        </nav>
-        <WorkspaceMenu/>
-      </header>
+      <SiteHeader/>
       <main>
         <section className="land-hero" aria-labelledby="hero-title">
           <div className="hero-copy">

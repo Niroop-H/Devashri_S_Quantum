@@ -1,9 +1,9 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { download } from '../services/projects';
 import './lab.css';
-import WorkspaceMenu from '../WorkspaceMenu';
+import SiteHeader from '../SiteHeader';
 export const destinations=[['/studio','Quantum Computing'],['/lab','Quantum Lab Twin'],['/sensing','Sensing & Metrology'],['/communication','Communication & Cryptography']];
-export function LabNav(){return <nav className="quantum-nav" aria-label="Quantum technology pages"><a href="/">MAH Quantum <small>Devashri S Quantum</small></a><WorkspaceMenu/></nav>}
+export function LabNav(){return <SiteHeader/>}
 export function Page({eyebrow,title,description,children}:{eyebrow:string;title:string;description:string;children:ReactNode}){useEffect(()=>{document.title=`${title} | MAH Quantum`;},[title]);return <div className="quantum-page"><LabNav/><main><header className="quantum-page-title"><span>{eyebrow}</span><h1>{title}</h1><p>{description}</p></header>{children}</main><footer className="quantum-footer">MAH Quantum — Devashri S Quantum <a href="https://github.com/Niroop-H/Devashri_S_Quantum/blob/main/docs/QUANTUM_LAB.md">Models, equations & operator guide ↗</a></footer></div>}
 export function Control({label,value,onChange,min,max,step=1,unit=''}:{label:string;value:number;onChange:(v:number)=>void;min:number;max:number;step?:number;unit?:string}){return <label className="lab-control"><span>{label}<span><NumericValue label={label} value={value} onChange={onChange} min={min} max={max} step={step}/> {unit}</span></span><input type="range" aria-label={label} value={value} min={min} max={max} step={step} onChange={e=>onChange(Number(e.target.value))}/><small>{min} — {max} {unit}</small></label>}
 export function Toggle({label,value,onChange}:{label:string;value:boolean;onChange:(v:boolean)=>void}){return <label className="lab-toggle"><input type="checkbox" checked={value} onChange={e=>onChange(e.target.checked)}/>{label}</label>}

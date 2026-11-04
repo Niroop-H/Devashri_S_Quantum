@@ -42,7 +42,7 @@ export const ExecutionPanel: React.FC<ExecutionPanelProps> = ({
           <h3>Your next discovery starts here.</h3>
           <p>
             Build a circuit or load a Bell state, then select{" "}
-            <span className="text-ibm-blue">Run simulation</span> to explore
+            <span className="text-ibm-blue">Run circuit</span> to explore
             measurement probabilities and state amplitudes.
           </p>
           <small>NO MEASUREMENT DATA YET</small>

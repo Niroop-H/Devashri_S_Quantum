@@ -1,7 +1,7 @@
 import { LabNav } from "./lab/Shared";
 import { newId } from "./services/id";
 import React, { useState, useEffect, useRef, useMemo } from "react";
-import { Header } from "./components/Header";
+import { CircuitControls } from "./components/Header";
 import { QuantumScene } from "./components/QuantumScene";
 import { Palette } from "./components/Palette";
 import { CircuitGrid } from "./components/CircuitGrid";
@@ -324,7 +324,23 @@ export const App: React.FC = () => {
       <a className="skip-link" href="#workspace">
         Skip to workspace
       </a>
-      <Header
+      <main className="studio-main lab-main">
+        <div className="lab-welcome">
+          <div>
+            <p className="eyebrow">MAH QUANTUM / DEVELOPMENT STUDIO</p>
+            <h1>
+              Build. Code. <em>Explore.</em>
+            </h1>
+            <p>Quantum circuits and code. Entirely in your browser.</p>
+          </div>
+          <div className="lab-welcome-actions">
+            <span className="lab-tag">FREE · NO API KEYS</span>
+            <button onClick={() => setShowHero((v) => !v)}>
+              {showHero ? "Hide" : "Show"} quantum core
+            </button>
+          </div>
+        </div>
+      <CircuitControls
         onRun={run}
         onReset={() => visualChange({ ...program, steps: [] })}
         isRunning={isRunning}
@@ -348,22 +364,6 @@ export const App: React.FC = () => {
         toggleNoiseModal={() => !isRunning && setNoiseOpen(true)}
         noiseEnabled={noise.enabled}
       />
-      <main className="studio-main lab-main">
-        <div className="lab-welcome">
-          <div>
-            <p className="eyebrow">MAH QUANTUM / DEVELOPMENT STUDIO</p>
-            <h1>
-              Build. Code. <em>Explore.</em>
-            </h1>
-            <p>Quantum circuits and code. Entirely in your browser.</p>
-          </div>
-          <div className="lab-welcome-actions">
-            <span className="lab-tag">FREE · NO API KEYS</span>
-            <button onClick={() => setShowHero((v) => !v)}>
-              {showHero ? "Hide" : "Show"} quantum core
-            </button>
-          </div>
-        </div>
         {showHero && (
           <QuantumScene
             qubits={program.qubits}

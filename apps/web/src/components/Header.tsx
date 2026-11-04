@@ -4,7 +4,6 @@ import {
   Settings2,
   RotateCcw,
   Loader2,
-  ArrowUpRight,
 } from "lucide-react";
 interface HeaderProps {
   onRun: () => void;
@@ -17,7 +16,7 @@ interface HeaderProps {
   toggleNoiseModal: () => void;
   noiseEnabled: boolean;
 }
-export const Header: React.FC<HeaderProps> = ({
+export const CircuitControls: React.FC<HeaderProps> = ({
   onRun,
   onReset,
   isRunning,
@@ -28,44 +27,10 @@ export const Header: React.FC<HeaderProps> = ({
   toggleNoiseModal,
   noiseEnabled,
 }) => (
-  <header className="studio-header">
-    <div className="brand-row">
-      <a className="brand" href="/" aria-label="MAH Quantum home">
-        <img
-          src="/mah-quantum-logo.jpg"
-          alt="MAH Quantum logo"
-          width="52"
-          height="52"
-        />
-        <div>
-          <span className="brand-name">
-            MAH QUANTUM<sup>™</sup>
-          </span>
-          <span className="brand-caption">
-            QPU STUDIO <i /> BY DEVASHRI S QUANTUM
-          </span>
-        </div>
-      </a>
-      <nav className="header-nav" aria-label="Studio navigation">
-        <a href="/">Home</a>
-        <a href="#workspace" className="nav-active">
-          Quantum workspace
-        </a>
-        <a
-          href="https://github.com/Niroop-H/Devashri_S_Quantum/blob/main/README.md"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Documentation <ArrowUpRight size={13} />
-        </a>
-      </nav>
-      <span className="environment-badge">
-        <span /> FREE LOCAL SIMULATOR
-      </span>
-    </div>
+  <section className="studio-run-controls" aria-label="Circuit execution controls">
     <div className="control-row">
       <div className="workspace-label">
-        <span className="status-dot" /> Simulation workspace{" "}
+        <span className="status-dot" /> Circuit controls{" "}
         <span className="workspace-version">/ 01</span>
       </div>
       <div className="studio-controls">
@@ -122,9 +87,9 @@ export const Header: React.FC<HeaderProps> = ({
           ) : (
             <Play size={14} fill="currentColor" />
           )}
-          {isRunning ? "Simulating…" : "Run simulation"}
+          {isRunning ? "Running…" : "Run circuit"}
         </button>
       </div>
     </div>
-  </header>
+  </section>
 );
