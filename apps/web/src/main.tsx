@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import {ThemeProvider} from "./Theme";
 import "./themes.css";
+import WorkspaceAccess from "./WorkspaceAccess";
 const Landing = lazy(() => import("./Landing"));
 const Studio = lazy(() => import("./App").then((m) => ({ default: m.App })));
 const Playground = lazy(() => import("./lab/Playground"));
@@ -27,7 +28,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </div>
       }
     >
-      <Content />
+      {Content === Landing || import.meta.env.VITE_WORKSPACE_ACCESS_ENABLED !== "true" ? <Content /> : <WorkspaceAccess><Content /></WorkspaceAccess>}
     </Suspense></ThemeProvider>
   </React.StrictMode>,
 );
