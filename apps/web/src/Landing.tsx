@@ -10,8 +10,21 @@ import {
 import "./landing.css";
 
 function QuantumGlobe({playing, excited}:{playing:boolean;excited:boolean}) {
- return <div className={`landchip-scene ${playing ? "" : "landchip-paused"} ${excited ? "landchip-active" : ""}`} onPointerMove={e=>{const r=e.currentTarget.getBoundingClientRect();e.currentTarget.style.setProperty('--tilt',`${(e.clientX-r.left)/r.width*24-12}deg`);}} onPointerLeave={e=>e.currentTarget.style.setProperty('--tilt','0deg')} role="img" aria-label="Interactive quantum processor visualization">
- <div className="landchip-orbit orbit-a"/><div className="landchip-orbit orbit-b"/><div className="landchip-assembly"><div className="landchip-board"><div className="landchip-traces"/>{Array.from({length:24},(_,i)=><i className="landchip-pin" key={i} style={{left:`${8+(i%12)*7.4}%`,top:i<12?'-14px':'100%'}}/>)}<div className="landchip-package"><div className="landchip-die">{Array.from({length:9},(_,i)=><span key={i} style={{animationDelay:`${i*.18}s`}}/>)}<b>MAH</b><small>QUANTUM CORE</small></div></div></div><div className="landchip-shadow"/></div><span className="landchip-label">QPU / 08-Q ARCHITECTURE</span></div>;
+ const [expanded,setExpanded]=useState(false);
+ return <div className={`landchip-scene ${playing ? "" : "landchip-paused"} ${excited ? "landchip-active" : ""} ${expanded ? "processor-expanded" : ""}`} onPointerMove={e=>{const r=e.currentTarget.getBoundingClientRect();e.currentTarget.style.setProperty('--tilt',`${(e.clientX-r.left)/r.width*22-11}deg`);}} onPointerLeave={e=>e.currentTarget.style.setProperty('--tilt','0deg')}>
+ <div className="processor-reticle" aria-hidden="true"/><div className="landchip-orbit orbit-a"/><div className="landchip-orbit orbit-b"/>
+ <span className="processor-callout callout-one">01 / CONTROL INTERFACE<i/></span><span className="processor-callout callout-two">02 / QUBIT LATTICE<i/></span>
+ <div className="landchip-assembly" role="img" aria-label="Layered quantum processor with gold bond wires, circuit traces and eight illuminated qubits">
+ <div className="processor-base"/><div className="processor-interposer"/>
+ <div className="landchip-board"><div className="landchip-traces"/>
+ {Array.from({length:64},(_,i)=>{const side=Math.floor(i/16),pos=7+(i%16)*5.7;return <i className={`processor-contact contact-${side}`} key={i} style={side<2?{left:`${pos}%`}:{top:`${pos}%`}}/>;})}
+ <svg className="processor-routing" viewBox="0 0 400 400" aria-hidden="true">{Array.from({length:12},(_,i)=>{const x=26+i*31;return <g key={i}><path d={`M ${x} 10 V 45 L ${100+i*17} 85 V 125 M ${x} 390 V 355 L ${100+i*17} 315 V 275 M 10 ${x} H 45 L 85 ${100+i*17} H 125 M 390 ${x} H 355 L 315 ${100+i*17} H 275`}/><circle cx={x} cy="28" r="2"/><circle cx={x} cy="372" r="2"/></g>;})}</svg>
+ {Array.from({length:4},(_,i)=><i key={i} className={`processor-screw screw-${i}`}/>)}
+ <div className="processor-bonds">{Array.from({length:32},(_,i)=><i key={i} style={{transform:`rotate(${i*11.25}deg) translateY(-104px)`}}/>)}</div>
+ <div className="landchip-package"><div className="processor-die"><div className="processor-mesh"/>{Array.from({length:8},(_,i)=><div className="processor-qubit" key={i} style={{animationDelay:`${i*.22}s`}}><i/><span>Q{i}</span></div>)}<div className="processor-scan"/><strong>MAH <small>QUANTUM</small></strong></div></div>
+ <span className="processor-serial">MAH / Q-08 · QUANTUM CORE</span></div></div>
+ <button className="processor-expand" onClick={()=>setExpanded(!expanded)} aria-pressed={expanded}>{expanded?'− Assemble processor':'+ Explore layers'}</button>
+ </div>;
 }
 function ParticleField(){
  const ref=useRef<HTMLCanvasElement>(null);
