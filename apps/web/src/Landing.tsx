@@ -265,9 +265,6 @@ export default function Landing() {
           <br />
           Quantum circuits. Code. Discovery.
         </p>
-        <a href="https://github.com/Niroop-H/Devashri_S_Quantum">
-          GitHub <ArrowUpRight size={16} />
-        </a>
         <a href="#top">Back to top ↑</a>
       </footer>
     </div>
