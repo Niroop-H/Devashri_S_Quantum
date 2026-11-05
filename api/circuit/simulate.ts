@@ -1,6 +1,6 @@
 import { simulateRequest } from "../../apps/engine/src/studio/request";
 /** Optional compatibility endpoint. The studio runs in a local Web Worker. */
-export default async function handler(req: any, res: any) {
+export default function handler(req: any, res: any) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -11,12 +11,6 @@ export default async function handler(req: any, res: any) {
   if (req.method !== "POST") {
     res.status(405).json({ error: "Use POST." });
     return;
-  }
-  if (process.env.VITE_WORKSPACE_ACCESS_ENABLED === 'true') {
-    try {
-      const {authorize} = await import('../../server/access/service');
-      if (!await authorize(req)) return res.status(401).json({error:'Workspace access required.'});
-    } catch { return res.status(503).json({error:'Workspace access is temporarily unavailable.'}); }
   }
   try {
     res.status(200).json(simulateRequest(req.body));
