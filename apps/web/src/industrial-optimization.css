@@ -52,3 +52,8 @@
 .industrial-three p{font-size:12px;color:#b6cddb;line-height:1.7}
 @media(max-width:960px){.industrial-layout{grid-template-columns:1fr}.industrial-three{grid-template-columns:1fr}.industrial-lead{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){.industrial-panel{padding:15px}.industrial-lead{gap:8px}.industrial-lead>div{padding:11px}.industrial-controls{grid-template-columns:1fr}.industrial-evidence{grid-template-columns:1fr}.industrial-groups{grid-template-columns:1fr}.industrial-section h2{font-size:18px}}
+
+.industrial-upload{position:relative;display:inline-flex;align-items:center;justify-content:center;padding:11px 14px;background:#1b3545;border:1px solid #526a7f;border-radius:7px;color:#edf6fe;font-size:12px;font-weight:600;cursor:pointer}
+.industrial-upload input{position:absolute;width:100%;height:100%;opacity:0;inset:0;cursor:pointer}
+.industrial-upload:focus-within{outline:2px solid #8ed6fa;outline-offset:2px}
+.industrial-upload:has(input:disabled){opacity:.5;cursor:not-allowed}
