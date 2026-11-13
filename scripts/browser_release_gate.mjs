@@ -208,6 +208,63 @@ async function main(){
    return{viewportPx:widths.viewport,pagePx:widths.page,executed:true};
   }finally{await mobileContext.close();}
  });
+ await test("Industrial QAOA workbench solves synthetic manufacturing partition and verifies classical optimum",async()=>{
+  const response=await page.goto(base+"/industrial",{waitUntil:"domcontentloaded"});
+  assert.equal(response?.status(),200);
+  await page.getByRole("heading",{name:"Industrial Optimization"}).waitFor({timeout:25000});
+  await page.getByRole("button",{name:"Run quantum + classical analysis"}).click();
+  await page.getByText("Verified classical optimum").waitFor({timeout:90000});
+  const results=await page.locator(".industrial-metrics").innerText();
+  assert.ok(results.includes("QAOA expected cut value"));
+  assert.ok(results.includes("Best sampled cut"));
+  assert.equal(await page.getByRole("button",{name:"Export audit-ready JSON"}).isDisabled(),false);
+  return{optimizationCompleted:true,engine:"QAOA p=1",classicalReference:true};
+ });
+ await test("Industrial optimization export contains matching canonical input digest and numerical provenance",async()=>{
+  const ready=page.waitForEvent("download",{timeout:15000});
+  await page.getByRole("button",{name:"Export audit-ready JSON"}).click();
+  const file=await ready;
+  const report=JSON.parse(readFileSync(await file.path(),"utf8"));
+  assert.equal(report.schema,"MAH-Quantum-Industrial-Optimization-Evidence/v1");
+  assert.equal(report.result.schema,"MAH-Quantum-Weighted-MaxCut/v1");
+  assert.equal(report.inputHash.canonicalGraphJson,
+   createHash("sha256").update(JSON.stringify(report.result.graph)).digest("hex"));
+  assert.equal(report.result.model.layers,1);
+  assert.equal(report.result.model.simulatedHardware,false);
+  assert.equal(report.result.settings.seed,2026);
+  assert.equal(report.result.settings.shots,1024);
+  assert.equal(report.result.execution.completedShots,1024);
+  assert.ok(report.result.classical.optimum>=report.result.quantum.bestSampleScore-1e-9);
+  assert.ok(report.result.classical.optimum>=report.result.quantum.exactExpectedScore-1e-9);
+  return{format:"verified MaxCut JSON",inputSha256:true,classicalOptimalityChecked:true};
+ });
+ await test("Industry application rejects malformed graph input and does not invent analysis",async()=>{
+  await page.getByRole("textbox",{name:"Industrial weighted graph JSON"}).fill(
+   '{"name":"Unsafe","nodes":["A","B"],"edges":[{"source":0,"target":1,"weight":-2}]}'
+  );
+  assert.equal(await page.getByRole("button",{name:"Export audit-ready JSON"}).isDisabled(),true);
+  await page.getByRole("button",{name:"Run quantum + classical analysis"}).click();
+  await page.getByRole("alert").filter({hasText:/positive/i}).waitFor({timeout:15000});
+  return{invalidGraphRejected:true};
+ });
+ await test("Industrial optimization is usable on 390px mobile viewport",async()=>{
+  const context=await browser.newContext({viewport:{width:390,height:844}});
+  await context.addInitScript(()=>{
+   localStorage.setItem("mah-workspace-access-v1",JSON.stringify({
+    version:1,active:"c0",codes:{"c0":{usedMs:0,cooldownUntil:0}},owner:null,heartbeat:0
+   }));
+  });
+  const mobile=await context.newPage();
+  try{
+   await mobile.goto(base+"/industrial",{waitUntil:"domcontentloaded"});
+   await mobile.getByRole("heading",{name:"Industrial Optimization"}).waitFor({timeout:25000});
+   const widths=await mobile.evaluate(()=>({page:document.documentElement.scrollWidth,viewport:innerWidth}));
+   assert.ok(widths.page<=widths.viewport+8,"Industrial page overflows: "+JSON.stringify(widths));
+   await mobile.getByRole("button",{name:"Run quantum + classical analysis"}).click();
+   await mobile.getByText("Verified classical optimum").waitFor({timeout:90000});
+   return{responsive:true,viewport:390,computed:true};
+  }finally{await context.close();}
+ });
  await test("No uncaught browser page exceptions",async()=>{
   assert.deepEqual(pageErrors,[]);
   return{uncaughtExceptions:pageErrors.length};
@@ -222,7 +279,7 @@ finally{
  const result={schema:"MQ-DSQ-BROWSER-RELEASE/v1",dateUtc:new Date().toISOString(),
   sha:process.env.GITHUB_SHA||"local",
   environment:"GitHub Actions Chromium, locally hosted production build; no cloud deployment",
-  scope:"20/100/1000+/2048 quantum UIs and worker smoke; access control not evaluated",
+  scope:"20/100/1000+/2048 quantum and industrial optimization browser smoke; access control not evaluated",
   durationMs:+(performance.now()-started).toFixed(2),
   counts:{total:evidence.length,passed:evidence.length-fails.length,failed:fails.length},cases:evidence};
  mkdirSync("artifacts",{recursive:true});
