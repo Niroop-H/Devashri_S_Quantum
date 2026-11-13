@@ -11,6 +11,7 @@ This workbench makes MAH Quantum useful for a precisely defined optimization use
 4. Sampled candidate assignments, complete shot histogram, objective-value comparison, and statistical summary.
 5. Export of complete versioned JSON evidence with SHA-256 fingerprint of canonical input, random seed, circuit method, parameter evaluations, numerical results, and limitations.
 6. Cancellable local browser computation with hard execution timeout and strict graph validation.
+7. Local bounded CSV edge-list import and CSV export (`source,target,weight`) for interoperability, including escaped/quoted labels and rejection of spreadsheet formula-like labels.
 
 These results are **classical simulations of quantum algorithms**, not results from a physical quantum processor.
 
@@ -66,8 +67,8 @@ Examples do **not** represent real factory, dispatch, grid reliability, capacity
 
 1. Select a synthetic example and run the experiment.
 2. Confirm the global optimum, QAOA expected score, best sampled score, and classical greedy baseline are present.
-3. Replace the example with a **customer-defined** undirected weighted conflict/interaction graph and document precisely what each weight means.
-4. Run the same model multiple times with the same seed; outcomes must agree. Change the seed and observe variations in samples while exact expectations remain unchanged.
+3. Replace the example with a **customer-defined** undirected weighted conflict/interaction graph. Paste JSON or import a bounded `source,target,weight` CSV edge list. Document the weight's unit and exactly which industry objective it represents.
+4. Roundtrip the imported graph to CSV and check all node labels, edge weights, and the graph objective mapping. Run the same model multiple times with the same seed; outcomes must agree. Change the seed and observe variations in samples while exact expectations remain unchanged.
 5. Export the evidence JSON, recompute SHA-256 over JSON.stringify(result.graph), reconcile every outcome's shots to completedShots, and reproduce the score of each returned assignment from the graph.
 6. Independently validate objective mapping and external constraints. Treat the result only as a **candidate** for any industrial decision.
 
