@@ -72,7 +72,7 @@ export default function IndustrialOptimization(){
    recordedAtUtc:completedAt,
    inputHash:{algorithm:"SHA-256",canonicalGraphJson:digest},
    provenance:"Local FP64 classical simulation of a p=1 QAOA circuit, with independently enumerated classical optimum.",
-   ...result
+   result
   };
   download("MAH-Quantum-Optimization-Evidence.json",JSON.stringify(report,null,2),"application/json");
  };
