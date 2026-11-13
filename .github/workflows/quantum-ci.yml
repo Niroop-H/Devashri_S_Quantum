@@ -16,7 +16,7 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Audit production dependencies for high-severity advisories
-        run: npm audit --omit=dev --audit-level=high
+        run: npm audit --registry=https://registry.npmjs.org --omit=dev --audit-level=high
       - run: npm test
       - run: node scripts/verify_market_api.mjs
       - run: npm run build:web
