@@ -44,3 +44,16 @@ jobs:
             artifacts/industrial-optimization-benchmarks.json
             artifacts/browser-release-gate.json
           if-no-files-found: ignore
+
+  windows-compatibility:
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build:web
