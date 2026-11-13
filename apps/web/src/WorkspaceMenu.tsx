@@ -3,7 +3,8 @@ import {createPortal} from 'react-dom';
 import './workspace-menu.css';
 export const workspaces=[
  ['/studio','Quantum Computing','1–100 logical qubits · adaptive exact simulation'],
- ['/1000-plus','1000+ Qubit','1,000–4,096 logical qubits · exact Clifford / separable'], 
+ ['/1000-plus','1000+ Qubit','1,000–4,096 logical qubits · exact supported families'],
+ ['/industrial','Industrial Optimization','Weighted MaxCut · QAOA vs verified classical optimum'], 
  ['/lab','Quantum Lab Twin','Hardware playground & guided operations'],
  ['/sensing','Sensing & Metrology','Magnetometry, clocks & gravimetry'],
  ['/communication','Communication & Cryptography','BB84, optical links & entanglement'],
