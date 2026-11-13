@@ -30,8 +30,8 @@ for(const input of inputs){
  assert.ok(quantum.bestSampleScore<=classical.optimum+1e-8);
  assert.ok(classical.greedyScore<=classical.optimum+1e-8);
  assert.equal(execution.completedShots,settings.shots);
- assert.ok(quantum.outcomes.reduce((s,o)=>s+o.shots,0)<=settings.shots,"Displayed top outcomes must not exceed completed shots.");
- assert.ok(quantum.outcomes.length<=20,"Displayed output remains bounded.");
+ assert.equal(quantum.outcomes.reduce((s,o)=>s+o.shots,0),settings.shots,"Complete bounded histogram must account for every shot.");
+ assert.ok(quantum.outcomes.length<=2**solved.graph.nodes.length,"Histogram size must remain bounded by basis states.");
  const twin=runWeightedOptimization(input,settings);
  assert.deepEqual(twin.quantum,quantum);
  const entry={
