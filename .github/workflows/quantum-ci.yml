@@ -22,6 +22,7 @@ jobs:
       - run: node scripts/extended-validation.mjs
       - run: node scripts/preannouncement_release_gate.mjs
       - run: node scripts/verify_partitioned.mjs
+      - run: node scripts/industrial_benchmark.mjs
       - name: Install release browser test tooling
         run: |
           npm install --no-save --no-package-lock playwright@1.55.0
@@ -38,5 +39,6 @@ jobs:
             artifacts/extended-quantum-validation.json
             artifacts/preannouncement-release-gate.json
             artifacts/partitioned-independent-validation.json
+            artifacts/industrial-optimization-benchmarks.json
             artifacts/browser-release-gate.json
           if-no-files-found: ignore
