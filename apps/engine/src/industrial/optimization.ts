@@ -208,7 +208,7 @@ export function runWeightedOptimization(raw:unknown,settings:OptimizationSetting
    approximate95PercentInterval:[Math.max(0,mean-margin),Math.min(optimum,mean+margin)],
    probabilityOfOptimalCut:Math.max(0,Math.min(1,optimalMass)),
    bestSampleScore,bestSampleAssignment:bitString(bestSampleMask,n),
-   bestSampleRatio:bestSampleScore/optimum,outcomes:outcomes.slice(0,20)},
+   bestSampleRatio:bestSampleScore/optimum,outcomes},
   execution:{elapsedMs:performance.now()-started,completedShots:shots,status:"completed"},
   caveats:[
    "This benchmark solves bounded weighted MaxCut (2–12 decisions), not a general industrial scheduling or routing model.",
