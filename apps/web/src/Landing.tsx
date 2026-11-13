@@ -170,6 +170,7 @@ export default function Landing() {
             <a className="land-button" href="/studio">
               Find your next discovery <ArrowUpRight size={18} />
             </a>
+            <p className="land-industrial-note"><strong>Industrial R&amp;D:</strong> Compare QAOA against exact classical solutions on bounded customer-supplied graph problems. <a href="/industrial">Explore the Optimization Workbench ↗</a></p>
           </div>
           <div className="workflow-list">
             {[
