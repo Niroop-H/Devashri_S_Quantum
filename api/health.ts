@@ -15,6 +15,15 @@ export default function handler(req: any, res: any) {
       restrictedCircuitFamiliesMaxLogicalQubits: 4096,
       families: ["clifford-stabilizer", "separable-state", "bounded-partitioned-statevector"],
     },
+    industrialOptimization: {
+      objective: "weighted-maxcut",
+      maxDecisionVariables: 12,
+      classicalOptimumVerified: true,
+      quantumAlgorithm: "ideal-qaoa-p1",
+      apiEnabled: Boolean(process.env.QUANTUM_INDUSTRIAL_API_TOKEN?.length &&
+        process.env.QUANTUM_INDUSTRIAL_API_TOKEN.length >= 32),
+      apiAuthenticated: true,
+    },
     simulationApi: {
       enabled: Boolean(process.env.QUANTUM_SIMULATION_API_TOKEN?.length &&
         process.env.QUANTUM_SIMULATION_API_TOKEN.length >= 32),
