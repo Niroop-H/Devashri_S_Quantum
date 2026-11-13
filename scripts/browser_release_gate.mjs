@@ -247,6 +247,37 @@ async function main(){
   await page.getByRole("alert").filter({hasText:/positive/i}).waitFor({timeout:15000});
   return{invalidGraphRejected:true};
  });
+ await test("Industrial CSV edge-list import roundtrips quoted labels and produces a verifiable model",async()=>{
+  const text='source,target,weight\n"Line, A",Welding,3\nWelding,Testing,2\n"Line, A",Testing,1\n';
+  await page.getByLabel("Import industrial CSV graph").setInputFiles({
+   name:"pilot.csv",mimeType:"text/csv",buffer:Buffer.from(text,"utf8")
+  });
+  const editor=page.getByRole("textbox",{name:"Industrial weighted graph JSON"});
+  await page.waitForFunction(()=>{
+   const el=document.querySelector('textarea[aria-label="Industrial weighted graph JSON"]');
+   return el&&el.value.includes("Line, A");
+  });
+  const graph=JSON.parse(await editor.inputValue());
+  assert.deepEqual(graph.nodes,["Line, A","Welding","Testing"]);
+  assert.equal(graph.edges.length,3);
+  await page.getByRole("button",{name:"Run quantum + classical analysis"}).click();
+  await page.getByText("Verified classical optimum").waitFor({timeout:30000});
+  const fileReady=page.waitForEvent("download",{timeout:10000});
+  await page.getByRole("button",{name:"Export graph CSV"}).click();
+  const exported=await fileReady;
+  const exportedCsv=readFileSync(await exported.path(),"utf8");
+  assert.ok(exportedCsv.startsWith("source,target,weight\r\n"));
+  assert.ok(exportedCsv.includes('"Line, A"'));
+  return{importedNodes:3,weightedEdges:3,quotedCsvRoundtrip:true,computed:true};
+ });
+ await test("Industrial CSV rejects spreadsheet-formula labels before executing",async()=>{
+  await page.getByLabel("Import industrial CSV graph").setInputFiles({
+   name:"untrusted.csv",mimeType:"text/csv",
+   buffer:Buffer.from('source,target,weight\n"=2+2",Plant,3\n',"utf8")
+  });
+  await page.getByRole("alert").filter({hasText:/spreadsheet formula operators/i}).waitFor({timeout:12000});
+  return{formulaLabelRejected:true};
+ });
  await test("Industrial optimization is usable on 390px mobile viewport",async()=>{
   const context=await browser.newContext({viewport:{width:390,height:844}});
   await context.addInitScript(()=>{
