@@ -26,6 +26,10 @@
     {
       "source": "/1000-plus/:path*",
       "destination": "/index.html"
+    },
+    {
+      "source": "/industrial/:path*",
+      "destination": "/index.html"
     }
   ],
   "headers": [
