@@ -40,6 +40,7 @@ async function main(){
   const response=await page.goto(base+"/",{waitUntil:"domcontentloaded"});
   assert.equal(response?.status(),200);
   await page.getByRole("link",{name:/1000\+ Qubit workspace/i}).waitFor({timeout:25000});
+  await page.getByRole("link",{name:/Explore the Optimization Workbench/i}).waitFor({timeout:10000});
   const copy=await page.locator(".landing").innerText();
   assert.ok(copy.includes("CONTROLLED WORKSPACE ACCESS"));
   assert.match(copy,/100\s+logical qubits/i);
