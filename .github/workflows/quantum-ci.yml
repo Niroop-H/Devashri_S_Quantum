@@ -16,6 +16,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
+      - run: node scripts/verify_market_api.mjs
       - run: npm run build:web
       - run: node scripts/verify-20.mjs
       - run: node scripts/extended-validation.mjs
