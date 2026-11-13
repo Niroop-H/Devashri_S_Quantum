@@ -12,6 +12,7 @@ This workbench makes MAH Quantum useful for a precisely defined optimization use
 5. Export of complete versioned JSON evidence with SHA-256 fingerprint of canonical input, random seed, circuit method, parameter evaluations, numerical results, and limitations.
 6. Cancellable local browser computation with hard execution timeout and strict graph validation.
 7. Local bounded CSV edge-list import and CSV export (`source,target,weight`) for interoperability, including escaped/quoted labels and rejection of spreadsheet formula-like labels.
+8. **Optional server-to-server pilot API** at `/api/industrial/optimize` requiring a strong server-only bearer token. It is disabled by default and separately bounded to 2,048 shots / 32 KiB per request.
 
 These results are **classical simulations of quantum algorithms**, not results from a physical quantum processor.
 
