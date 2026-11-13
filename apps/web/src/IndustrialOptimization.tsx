@@ -1,6 +1,7 @@
 import {useEffect,useRef,useState} from "react";
 import {Page} from "./lab/Shared";
 import {download} from "./services/projects";
+import {importWeightedEdgeCsv,exportWeightedEdgeCsv} from "./services/industrial-csv";
 import {industrialExamples,type IndustryScenario} from "./industrial-examples";
 import type {OptimizationResult} from "../../engine/src/industrial/optimization";
 import "./industrial-optimization.css";
@@ -15,7 +16,7 @@ function columns(bits:string,nodes:string[]){
  return{left,right};
 }
 export default function IndustrialOptimization(){
- const [scenario,setScenario]=useState<IndustryScenario>("manufacturing");
+ const [scenario,setScenario]=useState<IndustryScenario|"custom">("manufacturing");
  const [source,setSource]=useState(initial);
  const [shots,setShots]=useState(1024),[seed,setSeed]=useState(2026);
  const [result,setResult]=useState<OptimizationResult|null>(null);
@@ -25,6 +26,20 @@ export default function IndustrialOptimization(){
  const clear=()=>{setResult(null);setCompletedAt("");setError("");};
  const loadScenario=(name:IndustryScenario)=>{
   setScenario(name);setSource(JSON.stringify(industrialExamples[name],null,2));clear();
+ };
+ const importCsv=async(file:File|undefined)=>{
+  if(!file||running)return;
+  try{
+   const source=await file.text();
+   const graph=importWeightedEdgeCsv(source,file.name.replace(/\.csv$/i,"").slice(0,90));
+   setSource(JSON.stringify(graph,null,2));setScenario("custom");clear();
+  }catch(e){setError(e instanceof Error?e.message:"CSV import failed.");}
+ };
+ const downloadCsv=()=>{
+  try{
+   const graph=JSON.parse(source);
+   download("MAH-Quantum-Weighted-Edges.csv",exportWeightedEdgeCsv(graph),"text/csv");
+  }catch(e){setError(e instanceof Error?e.message:"Unable to export CSV.");}
  };
  const run=()=>{
   if(worker.current||running)return;
@@ -96,12 +111,21 @@ export default function IndustrialOptimization(){
       <option value="manufacturing">Manufacturing — interference separation</option>
       <option value="energy">Energy — network segmentation</option>
       <option value="computing">Compute — conflicting-job separation</option>
+      <option value="custom" disabled>Custom or imported graph</option>
      </select>
     </label>
     <label className="industrial-label">Weighted graph JSON
      <textarea aria-label="Industrial weighted graph JSON" className="industrial-source" spellCheck={false} disabled={running}
-      value={source} onChange={e=>{setSource(e.target.value);clear();}}/>
+      value={source} onChange={e=>{setSource(e.target.value);setScenario("custom");clear();}}/>
     </label>
+    <div className="industrial-actions">
+     <label className="industrial-upload">Import weighted edge-list CSV
+      <input aria-label="Import industrial CSV graph" accept=".csv,text/csv" type="file" disabled={running}
+       onChange={e=>{const input=e.currentTarget;const file=input.files?.[0];input.value="";void importCsv(file);}}/>
+     </label>
+     <button disabled={running} onClick={downloadCsv}>Export graph CSV</button>
+    </div>
+    <p className="industrial-muted">CSV schema: source,target,weight. Symbolic labels are preserved; weights must be positive. Files are parsed locally, not uploaded to the server.</p>
     <div className="industrial-controls">
      <label className="industrial-label">Measurement shots
       <select aria-label="Industrial optimization shots" value={shots} disabled={running} onChange={e=>{setShots(Number(e.target.value));clear();}}>
