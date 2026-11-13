@@ -56,6 +56,7 @@ export function importWeightedEdgeCsv(source:string,name="Imported industrial gr
  const node=(value:string):number=>{
   const label=value.trim();
   if(!label||label.length>48)throw Error("CSV nodes need nonempty labels of at most 48 characters.");
+  if(/^[=+\-@]/.test(label))throw Error("CSV node labels cannot begin with spreadsheet formula operators.");
   const key=label.toLocaleLowerCase("en");
   let index=seen.get(key);
   if(index===undefined){
