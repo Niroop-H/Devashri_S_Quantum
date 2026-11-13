@@ -1,0 +1,41 @@
+name: Quantum Studio CI
+on:
+  push:
+    branches: [main, feat/20-qubit-simulator]
+  pull_request:
+    branches: [main]
+jobs:
+  build-and-test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build:web
+      - run: node scripts/verify-20.mjs
+      - run: node scripts/extended-validation.mjs
+      - run: node scripts/preannouncement_release_gate.mjs
+      - run: node scripts/verify_partitioned.mjs
+      - name: Install release browser test tooling
+        run: |
+          npm install --no-save --no-package-lock playwright@1.55.0
+          npx playwright install chromium
+      - run: node scripts/browser_release_gate.mjs
+      - run: python -m unittest discover -s backend -p 'test_*.py'
+      - name: Save quantum validation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quantum-20-validation
+          path: |
+            artifacts/quantum-20-validation.json
+            artifacts/extended-quantum-validation.json
+            artifacts/preannouncement-release-gate.json
+            artifacts/partitioned-independent-validation.json
+            artifacts/browser-release-gate.json
+          if-no-files-found: ignore
