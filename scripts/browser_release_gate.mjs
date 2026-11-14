@@ -297,6 +297,65 @@ async function main(){
    return{responsive:true,viewport:390,computed:true};
   }finally{await context.close();}
  });
+ await test("1000+ research console autosaves named experiments and restores the editor after reload",async()=>{
+  const response=await page.goto(base+"/1000-plus",{waitUntil:"domcontentloaded"});
+  assert.equal(response?.status(),200);
+  await page.getByRole("heading",{name:"1000+ Qubit"}).waitFor({timeout:20000});
+  await page.getByRole("textbox",{name:"Experiment name"}).fill("Scientist acceptance session");
+  await page.getByRole("button",{name:"Save experiment"}).click();
+  await page.getByRole("textbox",{name:"Search experiments"}).fill("Scientist acceptance session");
+  await page.getByRole("button",{name:/Scientist acceptance session/i}).waitFor({timeout:10000});
+  await page.getByText("Autosaved to this browser").waitFor({timeout:10000});
+  await page.reload({waitUntil:"domcontentloaded"});
+  await page.getByRole("heading",{name:"1000+ Qubit"}).waitFor({timeout:15000});
+  assert.equal(await page.getByRole("textbox",{name:"Experiment name"}).inputValue(),"Scientist acceptance session");
+  assert.ok((await page.getByRole("textbox",{name:"Large quantum QASM code"}).inputValue()).includes("cx q[998],q[999];"));
+  await page.getByRole("button",{name:/Scientist acceptance session/i}).waitFor({timeout:10000});
+  return{namedExperimentsPersist:true,draftAutosaveRestored:true};
+ });
+ await test("Scientific circuit topology is derived from actual QASM operations",async()=>{
+  await page.getByRole("tab",{name:"Circuit map"}).click();
+  await page.getByText("OPERATION COMPOSITION").waitFor({timeout:12000});
+  const body=await page.locator(".hq-map-panel").innerText();
+  assert.match(body,/999/);
+  assert.match(body,/CX/);
+  assert.match(body,/logical depth estimate/);
+  assert.equal(await page.locator(".hq-touchmap>div").count(),64);
+  await page.getByRole("tab",{name:"Execution log"}).click();
+  await page.getByRole("log",{name:"Quantum worker execution log"}).waitFor({timeout:10000});
+  await page.getByRole("tab",{name:"QASM editor"}).click();
+  return{activityTiles:64,trueGateCounts:true,accessibleViews:true};
+ });
+ await test("QASM import/export and measurement-bit explorer retain exact 1-state frequency",async()=>{
+  const circuit="OPENQASM 2.0;\nqreg q[1000];\ncreg c[1000];\nx q[0];\n";
+  await page.getByLabel("Import QASM file").setInputFiles({
+   name:"industrial-operator-check.qasm",mimeType:"text/plain",buffer:Buffer.from(circuit)
+  });
+  await page.getByRole("textbox",{name:"Experiment name"}).waitFor({timeout:10000});
+  await page.waitForFunction(()=>{
+   const editor=document.querySelector('textarea[aria-label="Large quantum QASM code"]');
+   return editor&&editor.value.includes("x q[0];")&&editor.value.length<120;
+  });
+  const exported=page.waitForEvent("download",{timeout:15000});
+  await page.getByRole("button",{name:"Export QASM"}).click();
+  const file=await exported;
+  assert.equal(readFileSync(await file.path(),"utf8"),circuit);
+  await page.getByRole("button",{name:"Run quantum circuit"}).click();
+  await page.locator(".large-telemetry").getByText("Clifford stabilizer tableau").waitFor({timeout:40000});
+  await page.getByRole("tab",{name:"Bit analyzer"}).click();
+  await page.getByText("c0 sampled P(1)").waitFor({timeout:10000});
+  const details=await page.locator(".hq-focus").innerText();
+  assert.ok(details.includes("100.00%"),details);
+  return{sourceRoundtrip:true,measurementC0Probability:1,shotsRecorded:true};
+ });
+ await test("Named experiment run history persists reproducible method metadata",async()=>{
+  await page.reload({waitUntil:"domcontentloaded"});
+  await page.getByRole("heading",{name:"1000+ Qubit"}).waitFor({timeout:15000});
+  const histories=await page.locator(".hq-history-list").innerText();
+  assert.ok(histories.includes("completed"),histories);
+  assert.ok(histories.includes("1,000 Q"),histories);
+  return{reloadedRunHistory:true,metadataPreserved:true};
+ });
  await test("No uncaught browser page exceptions",async()=>{
   assert.deepEqual(pageErrors,[]);
   return{uncaughtExceptions:pageErrors.length};
@@ -311,7 +370,7 @@ finally{
  const result={schema:"MQ-DSQ-BROWSER-RELEASE/v1",dateUtc:new Date().toISOString(),
   sha:process.env.GITHUB_SHA||"local",
   environment:"GitHub Actions Chromium, locally hosted production build; no cloud deployment",
-  scope:"20/100/1000+/2048 quantum and industrial optimization browser smoke; access control not evaluated",
+  scope:"20/100/1000+/2048 quantum, scientific research console and industrial optimization browser smoke; access control not evaluated",
   durationMs:+(performance.now()-started).toFixed(2),
   counts:{total:evidence.length,passed:evidence.length-fails.length,failed:fails.length},cases:evidence};
  mkdirSync("artifacts",{recursive:true});
