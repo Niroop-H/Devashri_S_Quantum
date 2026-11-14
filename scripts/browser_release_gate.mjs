@@ -302,6 +302,7 @@ async function main(){
   assert.equal(response?.status(),200);
   await page.getByRole("heading",{name:"1000+ Qubit"}).waitFor({timeout:20000});
   await page.locator(".hq-preset").filter({hasText:"GHZ correlation"}).click();
+  await page.getByRole("combobox",{name:"Large circuit qubit count"}).selectOption("1000");
   await page.getByRole("textbox",{name:"Experiment name"}).fill("Scientist acceptance session");
   await page.getByRole("button",{name:"Save experiment"}).click();
   await page.getByRole("searchbox",{name:"Search experiments"}).fill("Scientist acceptance session");
