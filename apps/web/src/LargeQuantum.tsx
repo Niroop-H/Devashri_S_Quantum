@@ -188,7 +188,7 @@ export default function LargeQuantum(){
      id:new Date().toISOString(),title:snapshot.title,created:new Date().toISOString(),
      qubits:parsed.program.qubits,shots:snapshot.shots,seed:snapshot.seed,
      method:parsed.method,durationMs:duration,distinctOutcomes:0,
-     status:"failed",error:reason
+     status:"failed" as const,error:reason
     },...prev].slice(0,LARGE_HISTORY_LIMIT));
    }
   };
@@ -218,7 +218,7 @@ export default function LargeQuantum(){
   setHistory(prev=>[{
    id:new Date().toISOString(),title:draft.title,created:new Date().toISOString(),qubits:preflight?.program.qubits||draft.qubits,
    shots:draft.shots,seed:draft.seed,method:preflight?.method||"unresolved",
-   durationMs:0,distinctOutcomes:0,status:"cancelled"
+   durationMs:0,distinctOutcomes:0,status:"cancelled" as const
   },...prev].slice(0,LARGE_HISTORY_LIMIT));
  };
  const exportExperiment=async()=>{
