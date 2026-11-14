@@ -67,6 +67,8 @@ export default function LargeQuantum(){
  const [startedAt,setStartedAt]=useState("");
  const [logs,setLogs]=useState<LogEntry[]>([{at:logClock(),message:"Research console initialized. No remote computation is connected."}]);
  const [lineNo,setLineNo]=useState(1),[columnNo,setColumnNo]=useState(1);
+ const [jumpLine,setJumpLine]=useState(1);
+ const [focusMode,setFocusMode]=useState(false);
  const workerRef=useRef<Worker|null>(null);
  const deadlineRef=useRef<ReturnType<typeof setTimeout>|null>(null);
  const sourceEditor=useRef<HTMLTextAreaElement|null>(null);
@@ -284,7 +286,7 @@ export default function LargeQuantum(){
  const selectedHistoryRecord=history.find(h=>h.id===selectedHistory);
  return <Page eyebrow="MAH QUANTUM / RESEARCH COMPUTING" title="1000+ Qubit"
   description="An instrumented scientific workspace for exact, mathematically restricted large-scale quantum-circuit simulation. Classical computation only; no physical quantum processor.">
-  <div className="hq-shell">
+  <div className={focusMode?"hq-shell hq-focus-mode":"hq-shell"}>
    <header className="hq-commandbar">
     <div className="hq-document">
      <span className="hq-eyebrow"><span className="hq-signal"/> QUANTUM RESEARCH CONSOLE <span className="hq-version">v2.0 · LOCAL</span></span>
@@ -294,6 +296,7 @@ export default function LargeQuantum(){
      <span className="hq-save-state" aria-live="polite">{storageStatus}. Drafts are not cloud-synced.</span>
     </div>
     <div className="hq-header-tools">
+     <button type="button" onClick={()=>setFocusMode(v=>!v)} aria-pressed={focusMode}>{focusMode?"Exit editor focus":"Focus editor"}</button>
      <button type="button" onClick={createNew} disabled={running}>New experiment</button>
      <button type="button" onClick={saveNamed} disabled={running||draft.source.length>LARGE_LOCAL_SOURCE_LIMIT}>Save experiment</button>
      <button type="button" onClick={()=>importRef.current?.click()} disabled={running}>Import QASM</button>
@@ -391,7 +394,12 @@ export default function LargeQuantum(){
      <div className="hq-editor-body" hidden={editorTab!=="editor"}>
       <div className="hq-editor-toolbar">
        <div><span className="hq-file-dot"/><strong>experiment.qasm</strong><small>OpenQASM 2/3 subset</small></div>
-       <div><span>{number(draft.source.length)} chars</span><span>{number(lineCount)} lines</span></div>
+       <div className="hq-editor-navigation"><span>{number(draft.source.length)} chars</span><span>{number(lineCount)} lines</span>
+        <label htmlFor="hq-line-jump">Line</label>
+        <input id="hq-line-jump" aria-label="Jump to QASM line" type="number" min={1} max={lineCount} value={jumpLine}
+         onChange={e=>setJumpLine(Number(e.target.value))} onKeyDown={e=>{if(e.key==="Enter"){e.preventDefault();locate(jumpLine);}}}/>
+        <button type="button" onClick={()=>locate(jumpLine)}>Go</button>
+       </div>
       </div>
       <div className="hq-code-surface">
        <pre aria-hidden="true" className="hq-gutter" ref={gutterRef}>{Array.from({length:lineCount},(_,i)=>i+1).join("\n")}</pre>
