@@ -328,6 +328,17 @@ async function main(){
   await page.getByRole("tab",{name:"QASM editor"}).click();
   return{activityTiles:64,trueGateCounts:true,accessibleViews:true};
  });
+ await test("Long-circuit focus mode and line navigation work without changing the circuit",async()=>{
+  await page.getByRole("button",{name:"Focus editor"}).click();
+  assert.equal(await page.locator(".hq-shell").evaluate(el=>el.classList.contains("hq-focus-mode")),true);
+  assert.equal(await page.locator(".hq-sidebar").isVisible(),false);
+  await page.getByRole("spinbutton",{name:"Jump to QASM line"}).fill("1000");
+  await page.getByRole("button",{name:"Go",exact:true}).click();
+  await page.getByText("Ln 1000, Col 1").waitFor({timeout:10000});
+  await page.getByRole("button",{name:"Exit editor focus"}).click();
+  assert.equal(await page.locator(".hq-inspector").isVisible(),true);
+  return{focusModeToggled:true,navigationLine:1000,sourcePreserved:true};
+ });
  await test("QASM import/export and measurement-bit explorer retain exact 1-state frequency",async()=>{
   const circuit="OPENQASM 2.0;\nqreg q[1000];\ncreg c[1000];\nx q[0];\n";
   await page.getByLabel("Import QASM file").setInputFiles({
