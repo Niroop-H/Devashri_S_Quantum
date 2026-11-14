@@ -301,9 +301,10 @@ async function main(){
   const response=await page.goto(base+"/1000-plus",{waitUntil:"domcontentloaded"});
   assert.equal(response?.status(),200);
   await page.getByRole("heading",{name:"1000+ Qubit"}).waitFor({timeout:20000});
+  await page.getByRole("button",{name:/GHZ correlation.*Long-range entanglement/i}).click();
   await page.getByRole("textbox",{name:"Experiment name"}).fill("Scientist acceptance session");
   await page.getByRole("button",{name:"Save experiment"}).click();
-  await page.getByRole("textbox",{name:"Search experiments"}).fill("Scientist acceptance session");
+  await page.getByRole("searchbox",{name:"Search experiments"}).fill("Scientist acceptance session");
   await page.getByRole("button",{name:/Scientist acceptance session/i}).waitFor({timeout:10000});
   await page.getByText("Autosaved to this browser").waitFor({timeout:10000});
   await page.reload({waitUntil:"domcontentloaded"});
