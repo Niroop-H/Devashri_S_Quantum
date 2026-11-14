@@ -301,17 +301,17 @@ async function main(){
   const response=await page.goto(base+"/1000-plus",{waitUntil:"domcontentloaded"});
   assert.equal(response?.status(),200);
   await page.getByRole("heading",{name:"1000+ Qubit"}).waitFor({timeout:20000});
-  await page.getByRole("button",{name:/GHZ correlation.*Long-range entanglement/i}).click();
+  await page.locator(".hq-preset").filter({hasText:"GHZ correlation"}).click();
   await page.getByRole("textbox",{name:"Experiment name"}).fill("Scientist acceptance session");
   await page.getByRole("button",{name:"Save experiment"}).click();
   await page.getByRole("searchbox",{name:"Search experiments"}).fill("Scientist acceptance session");
-  await page.getByRole("button",{name:/Scientist acceptance session/i}).waitFor({timeout:10000});
+  await page.locator(".hq-saved-list .hq-saved-item > button:first-child").filter({hasText:"Scientist acceptance session"}).waitFor({timeout:10000});
   await page.getByText("Autosaved to this browser").waitFor({timeout:10000});
   await page.reload({waitUntil:"domcontentloaded"});
   await page.getByRole("heading",{name:"1000+ Qubit"}).waitFor({timeout:15000});
   assert.equal(await page.getByRole("textbox",{name:"Experiment name"}).inputValue(),"Scientist acceptance session");
   assert.ok((await page.getByRole("textbox",{name:"Large quantum QASM code"}).inputValue()).includes("cx q[998],q[999];"));
-  await page.getByRole("button",{name:/Scientist acceptance session/i}).waitFor({timeout:10000});
+  await page.locator(".hq-saved-list .hq-saved-item > button:first-child").filter({hasText:"Scientist acceptance session"}).waitFor({timeout:10000});
   return{namedExperimentsPersist:true,draftAutosaveRestored:true};
  });
  await test("Scientific circuit topology is derived from actual QASM operations",async()=>{
@@ -347,6 +347,7 @@ async function main(){
   await page.getByText("c0 sampled P(1)").waitFor({timeout:10000});
   const details=await page.locator(".hq-focus").innerText();
   assert.ok(details.includes("100.00%"),details);
+  await page.getByText("Autosaved to this browser").waitFor({timeout:10000});
   return{sourceRoundtrip:true,measurementC0Probability:1,shotsRecorded:true};
  });
  await test("Named experiment run history persists reproducible method metadata",async()=>{
