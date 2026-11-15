@@ -1,16 +1,17 @@
-/* Shared, non-interactive atmosphere across every route and scroll position. */
+/* Shared vapor field: static turbulence textures, compositor-only drift. */
 .quantum-atmosphere{display:none}
-html[data-theme=dark] .quantum-atmosphere{display:block;position:fixed;inset:0;overflow:hidden;pointer-events:none;user-select:none;z-index:20;mix-blend-mode:screen;contain:strict}
+html[data-theme=dark] .quantum-atmosphere{display:block;position:fixed;inset:0;overflow:hidden;pointer-events:none;user-select:none;z-index:20;mix-blend-mode:screen;contain:strict;mask-image:linear-gradient(90deg,#000 0%,#000c 20%,#0002 40%,#0001 60%,#000c 80%,#000 100%)}
 .quantum-atmosphere i{position:absolute;display:block;pointer-events:none}
-.smoke-plume{width:74vw;height:110vh;opacity:.22;will-change:transform;transform-origin:center;background-repeat:no-repeat}
-.smoke-blue{left:-36vw;top:-12vh;background:radial-gradient(ellipse at 42% 30%,#146cff 0,transparent 35%),radial-gradient(ellipse at 57% 53%,#18a9ff 0,transparent 28%),radial-gradient(ellipse at 30% 72%,#324dff 0,transparent 36%);animation:smoke-blue-drift 27s ease-in-out infinite alternate}
-.smoke-pink{right:-37vw;top:5vh;background:radial-gradient(ellipse at 55% 32%,#fa258f 0,transparent 34%),radial-gradient(ellipse at 37% 56%,#ff4fc7 0,transparent 26%),radial-gradient(ellipse at 65% 80%,#9d28ff 0,transparent 38%);animation:smoke-pink-drift 31s ease-in-out infinite alternate}
-.smoke-violet{left:16vw;bottom:-85vh;width:80vw;height:110vh;opacity:.12;background:radial-gradient(ellipse at 33% 30%,#146cff,transparent 40%),radial-gradient(ellipse at 65% 45%,#f32bab,transparent 40%);animation:smoke-floor-drift 23s ease-in-out infinite alternate}
-.smoke-filaments{inset:-15%;opacity:.08;background:radial-gradient(ellipse at 9% 50%,transparent 34%,#37adff 35%,transparent 37%),radial-gradient(ellipse at 91% 50%,transparent 33%,#ff5fcb 34%,transparent 36%);animation:smoke-floor-drift 35s ease-in-out infinite alternate}
-@keyframes smoke-blue-drift{from{transform:translate3d(-3%,0,0) rotate(-12deg) scale(.94)}to{transform:translate3d(8%,7%,0) rotate(9deg) scale(1.12)}}
-@keyframes smoke-pink-drift{from{transform:translate3d(3%,8%,0) rotate(9deg) scale(1.08)}to{transform:translate3d(-8%,-5%,0) rotate(-13deg) scale(.96)}}
-@keyframes smoke-floor-drift{from{transform:translate3d(-3%,3%,0) scale(.95)}to{transform:translate3d(4%,-5%,0) scale(1.1)}}
+.smoke-plume{width:clamp(420px,52vw,900px);height:125vh;transform-origin:center;background-repeat:no-repeat;opacity:.66;will-change:transform;mask:url('/atmosphere/smoke.svg') center/100% 100% no-repeat}
+.smoke-plume::after{content:"";position:absolute;inset:0;background:inherit;opacity:.7;mix-blend-mode:screen}
+.smoke-blue{left:-25vw;top:-15vh;background:linear-gradient(165deg,#2026bd 4%,#0878ff 25%,#6be6ff 44%,#165aff 63%,#3919c0 85%);animation:smoke-blue-drift 32s ease-in-out infinite alternate}
+.smoke-pink{right:-24vw;top:-2vh;background:linear-gradient(190deg,#7220da 5%,#f62a9e 28%,#ffa1e3 47%,#d82dff 64%,#4825bf 86%);animation:smoke-pink-drift 37s ease-in-out infinite alternate}
+.smoke-violet{width:100vw;height:95vh;left:0;bottom:-65vh;opacity:.36;transform:rotate(85deg);background:linear-gradient(90deg,#1885ff,#b241ee 50%,#ff399c);animation:smoke-floor-drift 29s ease-in-out infinite alternate}
+.smoke-filaments{inset:0;background:radial-gradient(ellipse at 0% 28%,#0869ff26,transparent 30%),radial-gradient(ellipse at 100% 67%,#fa208e20,transparent 30%),radial-gradient(ellipse at 55% 115%,#7828dd18,transparent 40%);opacity:1}
+@keyframes smoke-blue-drift{0%{transform:translate3d(-4%,6%,0) rotate(-10deg) scale(.96)}50%{transform:translate3d(6%,-3%,0) rotate(3deg) scale(1.07)}100%{transform:translate3d(2%,-10%,0) rotate(-4deg) scale(1.13)}}
+@keyframes smoke-pink-drift{0%{transform:translate3d(4%,-8%,0) rotate(174deg) scale(1.1)}50%{transform:translate3d(-6%,2%,0) rotate(185deg) scale(1.02)}100%{transform:translate3d(-2%,8%,0) rotate(178deg) scale(.95)}}
+@keyframes smoke-floor-drift{from{transform:translate3d(-5%,5%,0) rotate(82deg) scale(.95)}to{transform:translate3d(5%,-3%,0) rotate(96deg) scale(1.13)}}
 html:has(.landing-motion-paused) .quantum-atmosphere i{animation-play-state:paused}
-@media(max-width:640px){.smoke-plume{width:100vw;opacity:.17}.smoke-blue{left:-65vw}.smoke-pink{right:-65vw}.smoke-violet{left:0;bottom:-85vh}.smoke-filaments{display:none}}
-@media(prefers-reduced-motion:reduce){.quantum-atmosphere i{animation:none;will-change:auto}}
+@media(max-width:640px){.smoke-plume{width:100vw;height:115vh;opacity:.5}.smoke-blue{left:-53vw}.smoke-pink{right:-53vw}.smoke-violet{width:100vw;height:80vh;bottom:-60vh;left:0;opacity:.24}.smoke-plume::after{display:none}}
+@media(prefers-reduced-motion:reduce){.quantum-atmosphere i{animation:none;will-change:auto}.smoke-pink{transform:rotate(180deg)}}
 @media print{.quantum-atmosphere{display:none!important}}
