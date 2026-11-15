@@ -29,6 +29,13 @@ export default function ChipFabrication(){
  </g>)}
  {[0,1].map(side=><g key={side} transform={`translate(${side?440:43} 0)`}>{Array.from({length:15},(_,i)=><g key={i} transform={`translate(0 ${163+i*18})`}><rect width="16" height="9" rx="1" fill="#35151a"/><rect width="3" height="9" fill="#e2d4b9"/><rect x="13" width="3" height="9" fill="#e2d4b9"/><rect x="5" y="2" width="6" height="5" fill={i%3?'#b89d79':'#171719'}/></g>)}</g>)}
  {[[33,37],[467,37],[33,563],[467,563]].map(([x,y],i)=><g key={i}><circle cx={x} cy={y} r="13" fill="url(#mah-socket)"/><path d={`M${x-5} ${y-3} l5 -3 l5 3 v6 l-5 3 l-5 -3 Z`} fill="#1f170c"/></g>)}
+ {/* Sculpted perimeter rails with recessed channels and raised corner clamps. */}
+ {[0,1].map(side=><g key={`rail-${side}`} transform={side?'translate(500 600) rotate(180)':undefined}>
+ <path d="M16 164 L34 146 H54 V454 H34 L16 436 Z" fill="url(#mah-frame)" stroke="#fff1b2" strokeWidth="1.5"/>
+ <path d="M24 172 L33 162 H41 V438 H33 L24 428 Z" fill="#24262a" stroke="#ad8038"/>
+ {Array.from({length:24},(_,i)=><g key={i}><path d={`M27 ${179+i*10.3} h11`} stroke="#f4cd75" strokeWidth="2"/><path d={`M28 ${182+i*10.3} h9`} stroke="#716044" strokeWidth=".6"/></g>)}
+ {[38,510].map(y=><g key={y} transform={`translate(18 ${y})`}><path d="M0 0 H35 L48 13 V40 L35 53 H0 Z" fill="url(#mah-frame)" stroke="#fff4c8"/><path d="M7 8 H29 L39 18 V35 L29 45 H7 Z" fill="#34312b" stroke="#bd8f49"/><circle cx="23" cy="26" r="11" fill="url(#mah-socket)"/><path d="M18 23 l5 -3 l5 3 v6 l-5 3 l-5 -3 Z" fill="#161b20"/></g>)}
+ </g>)}
  {/* Paired transmission lines, stitched ground planes and ceramic RF modules. */}
  {[0,1].map(side=><g key={`rf-${side}`} transform={side?'translate(500 600) rotate(180)':undefined}>
   <rect x="23" y="140" width="454" height="318" rx="12" fill="none" stroke="#ffd98c" strokeWidth=".7"/>
@@ -54,7 +61,9 @@ export default function ChipFabrication(){
  </svg>;
 }
 export function ChipCore(){return <div className="mah-core-shield">
- <div className="mah-shield-grain"/><div className="mah-shield-rim"/>
+ <div className="mah-shield-grain"/>
+ <svg className="mah-crown" viewBox="0 0 300 210" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="mah-crown-gold"><stop stopColor="#fff3bf"/><stop offset=".25" stopColor="#e2ad48"/><stop offset=".48" stopColor="#fff8d3"/><stop offset=".6" stopColor="#bd872e"/><stop offset="1" stopColor="#ffe6a1"/></linearGradient></defs><path d="M24 3 H276 L297 24 V186 L276 207 H24 L3 186 V24 Z" fill="none" stroke="url(#mah-crown-gold)" strokeWidth="6"/><path d="M28 13 H272 L287 28 V182 L272 197 H28 L13 182 V28 Z" fill="none" stroke="#fff1bf" strokeWidth=".6"/>{[0,1].map(side=><g key={side} transform={side?'translate(300 210) rotate(180)':undefined}>{Array.from({length:12},(_,i)=><path key={i} d={`M${43+i*18} 4 v6`} stroke="#6c4d25" strokeWidth="2"/>)}<path d="M17 45 V165" stroke="#dca849" strokeWidth="2"/></g>)}</svg>
+ <div className="mah-crown-inlay"/><div className="mah-shield-rim"/>
  <div className="mah-shield-vents">{Array.from({length:22},(_,i)=><i key={i}/>)}</div>
  <span className="mah-shield-serial">MQ / PRECISION PACKAGE · 06</span>
  <div className="mah-chip-brand"><img src="/mah-quantum-logo.jpg" alt=""/><strong>MAH<br/>QUANTUM</strong><span>DEVASHRI S QUANTUM</span></div>
