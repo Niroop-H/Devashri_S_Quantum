@@ -30,3 +30,24 @@ html[data-theme=light] .mah-layer-key{background:#f9f6eeed;color:#31495c;border-
 @media(max-width:1000px){.landing .mah-red-assembly{width:290px;height:348px}.mah-chip-brand img{width:43px;height:43px}.mah-chip-brand strong{font-size:10px}}
 @media(max-width:640px){.landing .mah-red-assembly{width:258px;height:310px}.landing .processor-expanded{height:540px}.landing .processor-expanded .mah-red-assembly .landchip-package{transform:translateZ(72px)}.mah-chip-brand img{width:36px;height:36px}.mah-chip-brand strong{font-size:8px}.mah-chip-brand span{font-size:3px}.mah-layer-key{font-size:9px;gap:9px;padding:12px;bottom:58px}.landing .chip-macro .mah-red-assembly{scale:1.08}}
 @media(prefers-reduced-motion:reduce){.landing .mah-red-assembly,.landing .mah-red-assembly *{animation:none!important;transition:none!important}}
+/* Layer inspection stays readable outside the perspective-transformed assembly. */
+.mah-layer-key{display:block;bottom:66px;padding:12px}
+.mah-layer-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.mah-layer-tabs button{display:flex;align-items:center;gap:8px;min-height:36px;text-align:left;border:1px solid transparent;border-radius:3px;padding:7px;background:transparent;color:inherit;font:inherit;cursor:pointer}
+.mah-layer-tabs button[aria-pressed=true]{border-color:#b99a60;background:#e6bd7015;color:#ffe1a6}
+.mah-layer-tabs button:focus-visible{outline:2px solid #8acaff;outline-offset:2px}
+.mah-layer-key p{margin:10px 7px 0;line-height:1.5;font-size:11px;min-height:3em;color:inherit}
+html[data-theme=light] .mah-layer-tabs button[aria-pressed=true]{background:#e6bd7030;color:#634310}
+.landing-motion-paused *,.landing-motion-paused *::before,.landing-motion-paused *::after{animation-play-state:paused!important}
+@media(max-width:640px){.landing .processor-expanded{height:650px}.landing .processor-expanded .mah-red-assembly{top:33%}.mah-layer-tabs button{min-height:44px}.mah-layer-key p{min-height:4.5em}.landing .chip-inspect,.landing .processor-expand{min-height:44px}}
+@media(min-width:641px){.landing .processor-expanded{height:740px}.landing .processor-expanded .mah-red-assembly{top:34%}}
+/* Bright ruby carrier and polished, multi-pass gold machining. */
+.landing .mah-red-assembly .landchip-board{background:repeating-linear-gradient(4deg,#fff0cc10 0 1px,transparent 1px 3px),radial-gradient(ellipse at 25% 15%,#ff5660,#d9233d 48%,#a40c28 100%);border-color:#fff1b3;box-shadow:0 2px #fff0b5,0 5px #dba143,0 8px #a41629,0 11px #ffdc7c,0 15px #690c20,0 24px 28px #0009,inset 0 0 25px #ff847c28}
+.landing .mah-red-assembly .processor-base{background:repeating-linear-gradient(110deg,#fff9dd25 0 1px,transparent 1px 3px),linear-gradient(125deg,#ffe9a0,#d5a347 27%,#fff5c9 48%,#b28432 51%,#ffda7b 78%,#fff5c9);border-color:#fff5ca}
+.mah-cold-channels{background:repeating-linear-gradient(90deg,#e4bd6022 0 17px,#987137 18px 20px,#fff5c4 21px 22px);box-shadow:inset 0 0 20px #ac762d}
+.mah-shield-rim{position:absolute;inset:5px;border:1px solid #fff8d9;outline:1px solid #9a9e89;border-radius:5px;pointer-events:none}
+.mah-shield-vents{position:absolute;left:7%;right:7%;bottom:8%;height:5px;display:flex;justify-content:space-between;pointer-events:none}
+.mah-shield-vents i{width:3px;height:5px;background:linear-gradient(90deg,#657063,#e9edda);border-radius:1px;box-shadow:0 1px #fff}
+.mah-shield-serial{position:absolute;top:7%;left:8%;font:3.4px monospace;letter-spacing:.5px;color:#586252}
+.landing .processor-expand{left:50%;right:auto;transform:translateX(-50%);min-height:44px;padding:10px 18px}
+@media(max-width:640px){.landing .processor-expand{right:auto;left:50%}.mah-shield-serial{font-size:2.8px}}

@@ -15,10 +15,17 @@ import "./forged-chip.css";
 import "./red-chip.css";
 import { ArchitectureExperience, BellExperience } from "./LandingExperience";
 
+const chipLayers = [
+  ["Shield & die windows", "The metal package protects the die and exposes two inspection windows. Fine contacts connect the die to its carrier."],
+  ["Red signal carrier", "Gold traces route signals across the red circuit board. Ceramic connector banks provide the external electrical interface."],
+  ["Contact interposer", "The intermediate contact array connects the carrier to its mounting assembly while distributing connections across the package."],
+  ["Thermal foundation", "The machined base spreads heat toward the cooling interface. Its channels and mounting surfaces support the assembly."],
+];
+
 function QuantumGlobe({playing, excited}:{playing:boolean;excited:boolean}) {
  const [expanded,setExpanded]=useState(false);
- const [macro,setMacro]=useState(false);
- return <div className={`landchip-scene ${macro ? "chip-macro" : ""} ${playing ? "" : "landchip-paused"} ${excited ? "landchip-active" : ""} ${expanded ? "processor-expanded" : ""}`} onPointerMove={e=>{const r=e.currentTarget.getBoundingClientRect();e.currentTarget.style.setProperty('--tilt',`${(e.clientX-r.left)/r.width*22-11}deg`);}} onPointerLeave={e=>e.currentTarget.style.setProperty('--tilt','0deg')}>
+ const [layer,setLayer]=useState(0);
+ return <div className={`landchip-scene ${playing ? "" : "landchip-paused"} ${excited ? "landchip-active" : ""} ${expanded ? "processor-expanded" : ""}`} onPointerMove={e=>{const r=e.currentTarget.getBoundingClientRect();e.currentTarget.style.setProperty('--tilt',`${(e.clientX-r.left)/r.width*22-11}deg`);}} onPointerLeave={e=>e.currentTarget.style.setProperty('--tilt','0deg')}>
  <div className="core-environment" aria-hidden="true"><div className="core-halo halo-outer"/><div className="core-halo halo-inner"/><div className="core-halo halo-ticks"/><div className="core-nebula"/><div className="core-rays"/><svg className="core-signals" viewBox="0 0 600 520">{Array.from({length:12},(_,i)=>{const y=50+i*36;return <g key={i} style={{animationDelay:`${i*.25}s`}}><path className="signal-track" d={`M 0 ${y} H ${65+i%3*20} L 170 260 H 430 L ${515-i%3*20} ${y} H 600`}/><path className="signal-packet" style={{animationDelay:`${i*.23}s`}} d={`M 0 ${y} H ${65+i%3*20} L 170 260 H 430 L ${515-i%3*20} ${y} H 600`}/></g>;})}</svg><div className="core-readout readout-left">Q / 08<br/><span>COUPLED ARRAY</span><i/><i/><i/><i/><i/></div><div className="core-readout readout-right">MAH / CORE<br/><span>ARCHITECTURE VIEW</span><b>⌁ ⌁ ⌁</b></div></div><div className="processor-reticle" aria-hidden="true"/><div className="landchip-orbit orbit-a"/><div className="landchip-orbit orbit-b"/>
  <span className="processor-callout callout-one">01 / CONTROL INTERFACE<i/></span><span className="processor-callout callout-two">02 / QUBIT LATTICE<i/></span>
  <div className="landchip-assembly mah-red-assembly" role="img" aria-label="MAH Quantum red circuit board with polished gold frame, ceramic contact banks, metal shield, branded emblem and two exposed die windows">
@@ -28,17 +35,37 @@ function QuantumGlobe({playing, excited}:{playing:boolean;excited:boolean}) {
  <div className="landchip-board"><ChipFabrication/><div className="metal-specular"/>
  <div className="landchip-package"><ChipCore/></div>
  </div></div>
- {expanded&&<div className="mah-layer-key" aria-label="Processor layers"><span><b>01</b> Shield & die windows</span><span><b>02</b> Red signal carrier</span><span><b>03</b> Contact interposer</span><span><b>04</b> Thermal foundation</span></div>}
- <button className="chip-inspect" aria-pressed={macro} onClick={()=>setMacro(!macro)}>{macro ? "− Full assembly" : "+ Inspect fabrication"}</button>
+ {expanded&&<div className="mah-layer-key" aria-label="Processor layers">
+ <div className="mah-layer-tabs" role="group" aria-label="Choose a processor layer">{chipLayers.map(([name],i)=><button key={name} aria-pressed={layer===i} aria-controls="chip-layer-description" onClick={()=>setLayer(i)}><b>0{i+1}</b>{name}</button>)}</div>
+ <p id="chip-layer-description" aria-live="polite">{chipLayers[layer][1]}</p>
+ </div>}
  <button className="processor-expand" onClick={()=>setExpanded(!expanded)} aria-pressed={expanded}>{expanded?'− Assemble processor':'+ Explore layers'}</button>
  </div>;
 }
-function ParticleField(){
+function ParticleField({playing}:{playing:boolean}){
  const ref=useRef<HTMLCanvasElement>(null);
- useEffect(()=>{const c=ref.current!,ctx=c.getContext('2d')!;let f=0,w=0,h=0;const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
- const points=Array.from({length:65},()=>({x:Math.random(),y:Math.random(),vx:(Math.random()-.5)*.00013,vy:(Math.random()-.5)*.00013}));
- const resize=()=>{w=innerWidth;h=innerHeight;c.width=w;c.height=h;};resize();addEventListener('resize',resize);
- const draw=()=>{ctx.clearRect(0,0,w,h);points.forEach((p,i)=>{if(!reduced){p.x=(p.x+p.vx+1)%1;p.y=(p.y+p.vy+1)%1;}ctx.fillStyle='#7fc9ff';ctx.beginPath();ctx.arc(p.x*w,p.y*h,1.2,0,7);ctx.fill();for(let j=i+1;j<points.length;j++){const q=points[j],d=Math.hypot((p.x-q.x)*w,(p.y-q.y)*h);if(d<150){ctx.strokeStyle=`rgba(77,156,232,${(1-d/150)*.2})`;ctx.beginPath();ctx.moveTo(p.x*w,p.y*h);ctx.lineTo(q.x*w,q.y*h);ctx.stroke();}}});if(!reduced)f=requestAnimationFrame(draw);};draw();return()=>{cancelAnimationFrame(f);removeEventListener('resize',resize);};},[]);return <canvas className="particle-field" ref={ref} aria-hidden="true"/>;
+ useEffect(()=>{
+  const c=ref.current,ctx=c?.getContext('2d');if(!c||!ctx)return;
+  const preference=matchMedia('(prefers-reduced-motion: reduce)');
+  let frame=0,w=0,h=0,last=0;
+  const points=Array.from({length:65},()=>({x:Math.random(),y:Math.random(),vx:(Math.random()-.5)*.0078,vy:(Math.random()-.5)*.0078}));
+  const draw=(now:number)=>{
+   const moving=playing&&!preference.matches&&!document.hidden;
+   const dt=last?Math.min((now-last)/1000,.05):0;last=now;
+   ctx.clearRect(0,0,w,h);
+   points.forEach((p,i)=>{
+    if(moving){p.x=(p.x+p.vx*dt+1)%1;p.y=(p.y+p.vy*dt+1)%1;}
+    ctx.fillStyle='#7fc9ff';ctx.beginPath();ctx.arc(p.x*w,p.y*h,1.2,0,7);ctx.fill();
+    for(let j=i+1;j<points.length;j++){const q=points[j],d=Math.hypot((p.x-q.x)*w,(p.y-q.y)*h);if(d<150){ctx.strokeStyle=`rgba(77,156,232,${(1-d/150)*.2})`;ctx.beginPath();ctx.moveTo(p.x*w,p.y*h);ctx.lineTo(q.x*w,q.y*h);ctx.stroke();}}
+   });
+   if(moving)frame=requestAnimationFrame(draw);
+  };
+  const restart=()=>{cancelAnimationFrame(frame);last=0;draw(performance.now());};
+  const resize=()=>{w=innerWidth;h=innerHeight;const dpr=Math.min(devicePixelRatio||1,2);c.width=w*dpr;c.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);restart();};
+  resize();addEventListener('resize',resize);document.addEventListener('visibilitychange',restart);preference.addEventListener('change',restart);
+  return()=>{cancelAnimationFrame(frame);removeEventListener('resize',resize);document.removeEventListener('visibilitychange',restart);preference.removeEventListener('change',restart);};
+ },[playing]);
+ return <canvas className="particle-field" ref={ref} aria-hidden="true"/>;
 }
 const faqs = [
   [
@@ -63,7 +90,7 @@ export default function Landing() {
     [excited, setExcited] = useState(true),
     [open, setOpen] = useState<number | null>(0);
   return (
-    <div className="landing" id="top"><ParticleField/>
+    <div className={`landing ${playing ? "" : "landing-motion-paused"}`} id="top"><ParticleField playing={playing}/>
       <a className="landing-skip" href="#explore">
         Skip to content
       </a>
@@ -126,7 +153,7 @@ export default function Landing() {
                 className="motion-button"
                 onClick={() => setPlaying(!playing)}
                 aria-label={
-                  playing ? "Pause chip animation" : "Play chip animation"
+                  playing ? "Pause page animations" : "Play page animations"
                 }
               >
                 {playing ? <Pause size={16} /> : <Play size={16} />}
