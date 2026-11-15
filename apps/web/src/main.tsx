@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import {ThemeProvider} from "./Theme";
 import "./themes.css";
+import "./atmosphere.css";
 import WorkspaceAccess from "./WorkspaceAccess";
 import {AccessProvider} from "./access/AccessProvider";
 const Landing = lazy(() => import("./Landing"));
@@ -15,7 +16,7 @@ const path = window.location.pathname.replace(/\/$/, "");
 const Content = path === '/studio' ? Studio : path === '/lab/operations' ? Lab : path === '/lab' ? Playground : path === '/sensing' ? Sensing : path === '/communication' ? Communication : Landing;
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ThemeProvider><AccessProvider><Suspense
+    <ThemeProvider><div className="quantum-atmosphere" aria-hidden="true"><i className="smoke-plume smoke-blue"/><i className="smoke-plume smoke-pink"/><i className="smoke-plume smoke-violet"/><i className="smoke-filaments"/></div><AccessProvider><Suspense
       fallback={
         <div
           style={{

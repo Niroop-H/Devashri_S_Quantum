@@ -1,0 +1,16 @@
+/* Shared, non-interactive atmosphere across every route and scroll position. */
+.quantum-atmosphere{display:none}
+html[data-theme=dark] .quantum-atmosphere{display:block;position:fixed;inset:0;overflow:hidden;pointer-events:none;user-select:none;z-index:20;mix-blend-mode:screen;contain:strict}
+.quantum-atmosphere i{position:absolute;display:block;pointer-events:none}
+.smoke-plume{width:74vw;height:110vh;opacity:.22;will-change:transform;transform-origin:center;background-repeat:no-repeat}
+.smoke-blue{left:-36vw;top:-12vh;background:radial-gradient(ellipse at 42% 30%,#146cff 0,transparent 35%),radial-gradient(ellipse at 57% 53%,#18a9ff 0,transparent 28%),radial-gradient(ellipse at 30% 72%,#324dff 0,transparent 36%);animation:smoke-blue-drift 27s ease-in-out infinite alternate}
+.smoke-pink{right:-37vw;top:5vh;background:radial-gradient(ellipse at 55% 32%,#fa258f 0,transparent 34%),radial-gradient(ellipse at 37% 56%,#ff4fc7 0,transparent 26%),radial-gradient(ellipse at 65% 80%,#9d28ff 0,transparent 38%);animation:smoke-pink-drift 31s ease-in-out infinite alternate}
+.smoke-violet{left:16vw;bottom:-85vh;width:80vw;height:110vh;opacity:.12;background:radial-gradient(ellipse at 33% 30%,#146cff,transparent 40%),radial-gradient(ellipse at 65% 45%,#f32bab,transparent 40%);animation:smoke-floor-drift 23s ease-in-out infinite alternate}
+.smoke-filaments{inset:-15%;opacity:.08;background:radial-gradient(ellipse at 9% 50%,transparent 34%,#37adff 35%,transparent 37%),radial-gradient(ellipse at 91% 50%,transparent 33%,#ff5fcb 34%,transparent 36%);animation:smoke-floor-drift 35s ease-in-out infinite alternate}
+@keyframes smoke-blue-drift{from{transform:translate3d(-3%,0,0) rotate(-12deg) scale(.94)}to{transform:translate3d(8%,7%,0) rotate(9deg) scale(1.12)}}
+@keyframes smoke-pink-drift{from{transform:translate3d(3%,8%,0) rotate(9deg) scale(1.08)}to{transform:translate3d(-8%,-5%,0) rotate(-13deg) scale(.96)}}
+@keyframes smoke-floor-drift{from{transform:translate3d(-3%,3%,0) scale(.95)}to{transform:translate3d(4%,-5%,0) scale(1.1)}}
+html:has(.landing-motion-paused) .quantum-atmosphere i{animation-play-state:paused}
+@media(max-width:640px){.smoke-plume{width:100vw;opacity:.17}.smoke-blue{left:-65vw}.smoke-pink{right:-65vw}.smoke-violet{left:0;bottom:-85vh}.smoke-filaments{display:none}}
+@media(prefers-reduced-motion:reduce){.quantum-atmosphere i{animation:none;will-change:auto}}
+@media print{.quantum-atmosphere{display:none!important}}
