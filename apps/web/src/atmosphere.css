@@ -1,17 +1,15 @@
-/* Shared vapor field: static turbulence textures, compositor-only drift. */
+/* Cinematic smoke remains visible across routes and the full scroll depth. */
 .quantum-atmosphere{display:none}
-html[data-theme=dark] .quantum-atmosphere{display:block;position:fixed;inset:0;overflow:hidden;pointer-events:none;user-select:none;z-index:20;mix-blend-mode:screen;contain:strict;mask-image:linear-gradient(90deg,#000 0%,#000c 20%,#0002 40%,#0001 60%,#000c 80%,#000 100%)}
+html[data-theme=dark] .quantum-atmosphere{display:block;position:fixed;inset:0;overflow:hidden;pointer-events:none;user-select:none;z-index:20;mix-blend-mode:screen;contain:strict}
 .quantum-atmosphere i{position:absolute;display:block;pointer-events:none}
-.smoke-plume{width:clamp(420px,52vw,900px);height:125vh;transform-origin:center;background-repeat:no-repeat;opacity:.66;will-change:transform;mask:url('/atmosphere/smoke.svg') center/100% 100% no-repeat}
-.smoke-plume::after{content:"";position:absolute;inset:0;background:inherit;opacity:.7;mix-blend-mode:screen}
-.smoke-blue{left:-25vw;top:-15vh;background:linear-gradient(165deg,#2026bd 4%,#0878ff 25%,#6be6ff 44%,#165aff 63%,#3919c0 85%);animation:smoke-blue-drift 32s ease-in-out infinite alternate}
-.smoke-pink{right:-24vw;top:-2vh;background:linear-gradient(190deg,#7220da 5%,#f62a9e 28%,#ffa1e3 47%,#d82dff 64%,#4825bf 86%);animation:smoke-pink-drift 37s ease-in-out infinite alternate}
-.smoke-violet{width:100vw;height:95vh;left:0;bottom:-65vh;opacity:.36;transform:rotate(85deg);background:linear-gradient(90deg,#1885ff,#b241ee 50%,#ff399c);animation:smoke-floor-drift 29s ease-in-out infinite alternate}
-.smoke-filaments{inset:0;background:radial-gradient(ellipse at 0% 28%,#0869ff26,transparent 30%),radial-gradient(ellipse at 100% 67%,#fa208e20,transparent 30%),radial-gradient(ellipse at 55% 115%,#7828dd18,transparent 40%);opacity:1}
-@keyframes smoke-blue-drift{0%{transform:translate3d(-4%,6%,0) rotate(-10deg) scale(.96)}50%{transform:translate3d(6%,-3%,0) rotate(3deg) scale(1.07)}100%{transform:translate3d(2%,-10%,0) rotate(-4deg) scale(1.13)}}
-@keyframes smoke-pink-drift{0%{transform:translate3d(4%,-8%,0) rotate(174deg) scale(1.1)}50%{transform:translate3d(-6%,2%,0) rotate(185deg) scale(1.02)}100%{transform:translate3d(-2%,8%,0) rotate(178deg) scale(.95)}}
-@keyframes smoke-floor-drift{from{transform:translate3d(-5%,5%,0) rotate(82deg) scale(.95)}to{transform:translate3d(5%,-3%,0) rotate(96deg) scale(1.13)}}
+.smoke-plume{inset:-5%;background:url('/atmosphere/cinematic-smoke.webp') center/100% 100% no-repeat;opacity:.55;will-change:transform;transform-origin:center}
+.smoke-blue{mask-image:linear-gradient(90deg,#000 0%,#000 25%,transparent 48%);animation:cinematic-blue 32s ease-in-out infinite alternate}
+.smoke-pink{mask-image:linear-gradient(90deg,transparent 52%,#000 75%,#000 100%);animation:cinematic-pink 38s ease-in-out infinite alternate}
+.smoke-violet{display:none!important}
+.smoke-filaments{inset:0;background:radial-gradient(ellipse at 0% 35%,#0875ff16,transparent 30%),radial-gradient(ellipse at 100% 65%,#ff238d14,transparent 30%)}
+@keyframes cinematic-blue{from{transform:translate3d(-1%,2%,0) scale(1.01)}to{transform:translate3d(1%,-2%,0) scale(1.07)}}
+@keyframes cinematic-pink{from{transform:translate3d(1%,-2%,0) scale(1.07)}to{transform:translate3d(-1%,2%,0) scale(1.01)}}
 html:has(.landing-motion-paused) .quantum-atmosphere i{animation-play-state:paused}
-@media(max-width:640px){.smoke-plume{width:100vw;height:115vh;opacity:.5}.smoke-blue{left:-53vw}.smoke-pink{right:-53vw}.smoke-violet{width:100vw;height:80vh;bottom:-60vh;left:0;opacity:.24}.smoke-plume::after{display:none}}
-@media(prefers-reduced-motion:reduce){.quantum-atmosphere i{animation:none;will-change:auto}.smoke-pink{transform:rotate(180deg)}}
+@media(max-width:640px){.smoke-plume{inset:-3% -18%;opacity:.4}.smoke-blue{mask-image:linear-gradient(90deg,#000,transparent 39%)}.smoke-pink{mask-image:linear-gradient(90deg,transparent 61%,#000)}}
+@media(prefers-reduced-motion:reduce){.quantum-atmosphere i{animation:none;will-change:auto}}
 @media print{.quantum-atmosphere{display:none!important}}
