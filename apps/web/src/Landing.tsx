@@ -1,7 +1,7 @@
 import "./lab/lab.css";
 import SiteHeader from "./SiteHeader";
 import ChipFabrication, {ChipCore} from "./ChipFabrication";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import {
   ArrowUpRight,
   ArrowRight,
@@ -41,31 +41,6 @@ function QuantumGlobe({playing, excited}:{playing:boolean;excited:boolean}) {
  </div>}
  <button className="processor-expand" onClick={()=>setExpanded(!expanded)} aria-pressed={expanded}>{expanded?'− Assemble processor':'+ Explore layers'}</button>
  </div>;
-}
-function ParticleField({playing}:{playing:boolean}){
- const ref=useRef<HTMLCanvasElement>(null);
- useEffect(()=>{
-  const c=ref.current,ctx=c?.getContext('2d');if(!c||!ctx)return;
-  const preference=matchMedia('(prefers-reduced-motion: reduce)');
-  let frame=0,w=0,h=0,last=0;
-  const points=Array.from({length:65},()=>({x:Math.random(),y:Math.random(),vx:(Math.random()-.5)*.0078,vy:(Math.random()-.5)*.0078}));
-  const draw=(now:number)=>{
-   const moving=playing&&!preference.matches&&!document.hidden;
-   const dt=last?Math.min((now-last)/1000,.05):0;last=now;
-   ctx.clearRect(0,0,w,h);
-   points.forEach((p,i)=>{
-    if(moving){p.x=(p.x+p.vx*dt+1)%1;p.y=(p.y+p.vy*dt+1)%1;}
-    ctx.fillStyle='#7fc9ff';ctx.beginPath();ctx.arc(p.x*w,p.y*h,1.2,0,7);ctx.fill();
-    for(let j=i+1;j<points.length;j++){const q=points[j],d=Math.hypot((p.x-q.x)*w,(p.y-q.y)*h);if(d<150){ctx.strokeStyle=`rgba(77,156,232,${(1-d/150)*.2})`;ctx.beginPath();ctx.moveTo(p.x*w,p.y*h);ctx.lineTo(q.x*w,q.y*h);ctx.stroke();}}
-   });
-   if(moving)frame=requestAnimationFrame(draw);
-  };
-  const restart=()=>{cancelAnimationFrame(frame);last=0;draw(performance.now());};
-  const resize=()=>{w=innerWidth;h=innerHeight;const dpr=Math.min(devicePixelRatio||1,2);c.width=w*dpr;c.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);restart();};
-  resize();addEventListener('resize',resize);document.addEventListener('visibilitychange',restart);preference.addEventListener('change',restart);
-  return()=>{cancelAnimationFrame(frame);removeEventListener('resize',resize);document.removeEventListener('visibilitychange',restart);preference.removeEventListener('change',restart);};
- },[playing]);
- return <canvas className="particle-field" ref={ref} aria-hidden="true"/>;
 }
 const faqs = [
   [

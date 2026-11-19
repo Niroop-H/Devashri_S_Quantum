@@ -4,6 +4,7 @@ import "./index.css";
 import {ThemeProvider} from "./Theme";
 import "./themes.css";
 import "./atmosphere.css";
+import CosmicUniverse from "./CosmicUniverse";
 import WorkspaceAccess from "./WorkspaceAccess";
 import {AccessProvider} from "./access/AccessProvider";
 const Landing = lazy(() => import("./Landing"));
@@ -16,7 +17,7 @@ const path = window.location.pathname.replace(/\/$/, "");
 const Content = path === '/studio' ? Studio : path === '/lab/operations' ? Lab : path === '/lab' ? Playground : path === '/sensing' ? Sensing : path === '/communication' ? Communication : Landing;
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ThemeProvider>{Content === Landing && <div className="quantum-atmosphere" aria-hidden="true" />}<AccessProvider><Suspense
+    <ThemeProvider>{Content === Landing && <CosmicUniverse />}<AccessProvider><Suspense
       fallback={
         <div
           style={{
