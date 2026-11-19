@@ -19,3 +19,7 @@ html[data-theme=dark] .landing .hero-copy{background:radial-gradient(ellipse at 
 /* Let the continuous universe show through section spacing; keep work panels opaque. */
 html[data-theme=dark] .landing :is(.land-workflow,.bell-section,.landing-cryo,.land-faq,.land-cta){background:linear-gradient(90deg,#0009,#000c 35%,#000c 65%,#0009)!important}
 html[data-theme=dark] .landing :is(.architecture-console,.bell-lab,.discovery-main,.discovery-code){background-color:#080e17!important}
+
+/* Clip offscreen hit regions so they cannot enlarge the page during scrolling. */
+html[data-theme=dark] .cosmic-universe{overflow:clip;contain:strict}
+.cosmic-galaxy{will-change:transform;touch-action:pan-y}
