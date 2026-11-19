@@ -23,3 +23,6 @@ html[data-theme=dark] .landing :is(.architecture-console,.bell-lab,.discovery-ma
 /* Clip offscreen hit regions so they cannot enlarge the page during scrolling. */
 html[data-theme=dark] .cosmic-universe{overflow:clip;contain:strict}
 .cosmic-galaxy{will-change:transform;touch-action:pan-y}
+
+/* Recovery: keep the landing usable independently of the optional canvas renderer. */
+html[data-theme=dark] .landing{background:#000!important;pointer-events:auto}
