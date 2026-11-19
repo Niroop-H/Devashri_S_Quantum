@@ -90,7 +90,7 @@ export default function Landing() {
     [excited, setExcited] = useState(true),
     [open, setOpen] = useState<number | null>(0);
   return (
-    <div className={`landing ${playing ? "" : "landing-motion-paused"}`} id="top"><ParticleField playing={playing}/>
+    <div className={`landing ${playing ? "" : "landing-motion-paused"}`} id="top">
       <a className="landing-skip" href="#explore">
         Skip to content
       </a>

@@ -1,15 +1,5 @@
-/* Cinematic smoke remains visible across routes and the full scroll depth. */
+/* Static cosmic panorama, mounted exclusively on the landing route. */
 .quantum-atmosphere{display:none}
-html[data-theme=dark] .quantum-atmosphere{display:block;position:fixed;inset:0;overflow:hidden;pointer-events:none;user-select:none;z-index:20;mix-blend-mode:screen;contain:strict}
-.quantum-atmosphere i{position:absolute;display:block;pointer-events:none}
-.smoke-plume{inset:-5%;background:url('/atmosphere/cinematic-smoke.webp') center/100% 100% no-repeat;opacity:.55;will-change:transform;transform-origin:center}
-.smoke-blue{mask-image:linear-gradient(90deg,#000 0%,#000 25%,transparent 48%);animation:cinematic-blue 32s ease-in-out infinite alternate}
-.smoke-pink{mask-image:linear-gradient(90deg,transparent 52%,#000 75%,#000 100%);animation:cinematic-pink 38s ease-in-out infinite alternate}
-.smoke-violet{display:none!important}
-.smoke-filaments{inset:0;background:radial-gradient(ellipse at 0% 35%,#0875ff16,transparent 30%),radial-gradient(ellipse at 100% 65%,#ff238d14,transparent 30%)}
-@keyframes cinematic-blue{from{transform:translate3d(-1%,2%,0) scale(1.01)}to{transform:translate3d(1%,-2%,0) scale(1.07)}}
-@keyframes cinematic-pink{from{transform:translate3d(1%,-2%,0) scale(1.07)}to{transform:translate3d(-1%,2%,0) scale(1.01)}}
-html:has(.landing-motion-paused) .quantum-atmosphere i{animation-play-state:paused}
-@media(max-width:640px){.smoke-plume{inset:-3% -18%;opacity:.4}.smoke-blue{mask-image:linear-gradient(90deg,#000,transparent 39%)}.smoke-pink{mask-image:linear-gradient(90deg,transparent 61%,#000)}}
-@media(prefers-reduced-motion:reduce){.quantum-atmosphere i{animation:none;will-change:auto}}
+html[data-theme=dark] .quantum-atmosphere{display:block;position:fixed;inset:0;pointer-events:none;user-select:none;z-index:20;mix-blend-mode:screen;background:url('/atmosphere/cosmic-universe.webp') center/cover no-repeat;opacity:.68;contain:strict;mask-image:linear-gradient(90deg,#000,rgba(0,0,0,.3) 35%,rgba(0,0,0,.3) 60%,#000)}
+@media(max-width:640px){html[data-theme=dark] .quantum-atmosphere{background-size:auto 100%;background-position:72% center;opacity:.42;mask-image:linear-gradient(90deg,rgba(0,0,0,.5),#000)}}
 @media print{.quantum-atmosphere{display:none!important}}

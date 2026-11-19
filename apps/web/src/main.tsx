@@ -16,7 +16,7 @@ const path = window.location.pathname.replace(/\/$/, "");
 const Content = path === '/studio' ? Studio : path === '/lab/operations' ? Lab : path === '/lab' ? Playground : path === '/sensing' ? Sensing : path === '/communication' ? Communication : Landing;
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ThemeProvider>{Content === Landing && <div className="quantum-atmosphere" aria-hidden="true"><i className="smoke-plume smoke-blue"/><i className="smoke-plume smoke-pink"/><i className="smoke-plume smoke-violet"/><i className="smoke-filaments"/></div>}<AccessProvider><Suspense
+    <ThemeProvider>{Content === Landing && <div className="quantum-atmosphere" aria-hidden="true" />}<AccessProvider><Suspense
       fallback={
         <div
           style={{
